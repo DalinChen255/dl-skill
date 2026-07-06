@@ -1,0 +1,7 @@
+{
+  "accounts": [
+    { "id": "aaaa1111000000000d000001", "name": "示例账号A" },
+    { "id": "bbbb2222000000000d000002", "name": "示例账号B" }
+  ],
+  "workspace_dir": "~/xhs-followup-workspace"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "dl-skill",
+  "owner": {
+    "name": "DalinChen255"
+  },
+  "metadata": {
+    "description": "陈大Lin的开源 skill 合集",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "dl-xhs-winback",
+      "description": "小红书专业号私信通每日客户跟进/召回：从留资客户中筛出可安全触达的对象，逐个复核后发送跟进私信。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "customer-outreach",
+      "keywords": [
+        "xiaohongshu",
+        "winback",
+        "follow-up",
+        "customer-outreach",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/dl-xhs-winback"
+      ]
+    }
+  ]
+}

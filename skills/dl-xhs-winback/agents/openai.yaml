@@ -1,0 +1,4 @@
+interface:
+  display_name: "小红书私信自动跟进"
+  short_description: "用用户列表 CSV 和 UID 复核稳定跟进私信"
+  default_prompt: "使用 $dl-xhs-winback 先确认本轮文案和账号范围，再按表格跟进、继续未完成任务、处理异常/补发或只查状态执行。"
