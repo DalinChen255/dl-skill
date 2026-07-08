@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "陈大Lin的开源 skill 合集",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
@@ -24,6 +24,24 @@
       ],
       "skills": [
         "./skills/dl-xhs-winback"
+      ]
+    },
+    {
+      "name": "dl-content-deepdive",
+      "description": "访谈式内容深化：想法模糊或需要深度挖掘时，用访谈激发思考，20-30分钟产出高质量内容（口播稿/小红书笔记/公众号长文）。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "content-creation",
+      "keywords": [
+        "content-creation",
+        "interview",
+        "ideation",
+        "scriptwriting",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/dl-content-deepdive"
       ]
     }
   ]
