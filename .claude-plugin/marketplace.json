@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "陈大Lin的开源 skill 合集",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "plugins": [
     {
@@ -42,6 +42,24 @@
       ],
       "skills": [
         "./skills/dl-content-deepdive"
+      ]
+    },
+    {
+      "name": "dl-xhs-distill",
+      "description": "小红书博主蒸馏器：输入博主主页链接，产出 IP 定位/运营策略/内容形式三层蒸馏的 HTML 报告，以及可 1:1 模仿或融合风格创作的 Skill 文件夹。",
+      "source": "./",
+      "strict": false,
+      "version": "1.0.0",
+      "category": "content-creation",
+      "keywords": [
+        "xiaohongshu",
+        "content-analysis",
+        "stylometry",
+        "creation-skill",
+        "chinese"
+      ],
+      "skills": [
+        "./skills/dl-xhs-distill"
       ]
     }
   ]
