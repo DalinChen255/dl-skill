@@ -3,6 +3,7 @@
 import json
 import re
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -15,6 +16,7 @@ BROWSER_USER_AGENT = (
 )
 
 _PROFILE_RE = re.compile(r"xiaohongshu\.com/user/profile/([0-9a-fA-F]{20,32})")
+_NOTE_RE = re.compile(r"xiaohongshu\.com/(?:explore|discovery/item)/([0-9a-fA-F]{20,32})")
 _SHORT_LINK_RE = re.compile(r"xhslink\.com/")
 
 
@@ -43,13 +45,21 @@ def parse_xhs_user_link(url: str) -> str:
     return match.group(1)
 
 
-def compute_collection_tiers(total_notes: int) -> dict:
-    """按总笔记数计算三档动态采集量：快速=1/3，推荐=1/2，深度=全量。"""
-    if total_notes <= 0:
-        return {"快速": 0, "推荐": 0, "深度": 0}
-    fast = max(1, total_notes // 3)
-    recommended = max(1, total_notes // 2)
-    return {"快速": fast, "推荐": recommended, "深度": total_notes}
+def parse_xhs_note_link(url: str) -> dict:
+    """从小红书笔记链接或分享短链中提取 note_id 与 xsec_token。"""
+    resolved = resolve_short_link(url)
+    match = _NOTE_RE.search(resolved)
+    if not match:
+        raise ValueError(
+            f"无法从链接中解析出小红书笔记 ID：{url}\n"
+            "请确认链接是笔记详情链接（形如 https://www.xiaohongshu.com/explore/<id>）"
+            "或分享短链（形如 http://xhslink.com/xxxx）"
+        )
+    note_id = match.group(1)
+    parsed = urllib.parse.urlparse(resolved)
+    query = urllib.parse.parse_qs(parsed.query)
+    xsec_token = query.get("xsec_token", [""])[0]
+    return {"note_id": note_id, "xsec_token": xsec_token}
 
 
 def get_config_dir() -> Path:
