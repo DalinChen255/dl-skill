@@ -111,7 +111,7 @@ python scripts/crawl_blogger.py <user_id> --count <选定篇数> -o ./data
 python scripts/analyze.py ./data/<file_id>_notes_details.json -o ./data
 ```
 `file_id` 模式一是 `user_id`，模式二是 `crawl_notes.py` 打印出的批次标识（形如
-`20260715_5notes`）。
+`20260715_5notes_a1b2`）。
 
 **Phase 3 · 生成拆解产出**
 
