@@ -45,8 +45,8 @@
       ]
     },
     {
-      "name": "dl-xhs-distill",
-      "description": "小红书博主蒸馏器：输入博主主页链接，产出 IP 定位/运营策略/内容形式三层蒸馏的 HTML 报告，以及可 1:1 模仿或融合风格创作的 Skill 文件夹。",
+      "name": "dl-xhs-benchmark",
+      "description": "小红书对标笔记拆解器：输入对标博主链接或指定笔记链接，产出笔记结构层（标题/开头/中间/结尾/CTA/叙事框架）拆解报告，以及可 1:1 模仿或融合风格创作的写作指南 Skill 文件夹。",
       "source": "./",
       "strict": false,
       "version": "1.0.0",
@@ -54,12 +54,12 @@
       "keywords": [
         "xiaohongshu",
         "content-analysis",
-        "stylometry",
+        "benchmark",
         "creation-skill",
         "chinese"
       ],
       "skills": [
-        "./skills/dl-xhs-distill"
+        "./skills/dl-xhs-benchmark"
       ]
     }
   ]

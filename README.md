@@ -8,7 +8,7 @@
 |---|---|
 | `dl-xhs-winback` | 小红书专业号私信通每日客户跟进/召回：从线索表和私信历史里筛出已留资、非同行、24 小时内无回复、无负面的客户，逐条复核后发送跟进私信，避免误伤已转化或已拒绝的客户 |
 | `dl-content-deepdive` | 访谈式内容深化：想法模糊或需要深度挖掘时，用访谈激发思考，20-30分钟产出高质量内容（口播稿/小红书笔记/公众号长文），不依赖任何特定项目结构，独立可用 |
-| `dl-xhs-distill` | 小红书博主蒸馏器：输入博主主页链接，产出 IP 定位/运营策略/内容形式三层蒸馏的 HTML 报告，以及可 1:1 模仿或融合风格创作的 Skill 文件夹 |
+| `dl-xhs-benchmark` | 小红书对标笔记拆解器：输入对标博主链接或你自己挑的几篇笔记链接，产出笔记结构层（标题/开头/中间/结尾/CTA/叙事框架）拆解报告，以及可 1:1 模仿或融合风格创作的写作指南 Skill 文件夹 |
 
 每个 skill 目录下都有自己的 `SKILL.md`（含使用说明和授权门禁）和 `config.example.json`（配置示例）。
 
@@ -20,7 +20,7 @@
 claude plugin marketplace add DalinChen255/dl-skill
 claude plugin install dl-xhs-winback@dl-skill
 claude plugin install dl-content-deepdive@dl-skill
-claude plugin install dl-xhs-distill@dl-skill
+claude plugin install dl-xhs-benchmark@dl-skill
 ```
 
 #### 手动安装（适用于 Claude Code / Codex）
@@ -37,7 +37,7 @@ cp -R dl-skill/skills/dl-xhs-winback ~/.claude/skills/dl-xhs-winback
 
 `dl-content-deepdive` 不需要预先配置：第一次使用时会直接问你保存路径，确认后自动写入当前工作目录下的配置文件，不用手动编辑任何文件。
 
-`dl-xhs-distill` 需要一个 [TikHub](https://user.tikhub.io/register?ref=QYnybFaK) API Token（用于通过公开 REST API 拉取小红书公开数据），首次运行 `scripts/check_env.py` 会引导你注册并输入 Token，自动保存到 `~/.dl-xhs-distill/tikhub_config.json`（不在 skill 目录内，不涉及 `config.json`/`config.example.json`），也可以提前设置环境变量 `TIKHUB_API_TOKEN` 跳过交互式引导。
+`dl-xhs-benchmark` 需要一个 [TikHub](https://user.tikhub.io/register?ref=QYnybFaK) API Token（用于通过公开 REST API 拉取小红书公开数据），首次运行 `scripts/check_env.py` 会引导你注册并输入 Token，自动保存到 `~/.dl-xhs-benchmark/tikhub_config.json`（不在 skill 目录内，不涉及 `config.json`/`config.example.json`），也可以提前设置环境变量 `TIKHUB_API_TOKEN` 跳过交互式引导。
 
 #### 从 Release 下载
 
