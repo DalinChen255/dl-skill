@@ -1,6 +1,7 @@
 """Phase 1（模式二）：按用户提供的笔记链接列表逐条采集详情，每篇自动 checkpoint。"""
 
 import argparse
+import hashlib
 import sys
 from datetime import date
 from pathlib import Path
@@ -10,14 +11,19 @@ from scripts.utils import common
 from scripts.utils.tikhub_client import TikHubClient, TikHubError
 
 
-def build_batch_id(link_count: int, today: date = None) -> str:
-    """生成模式二产出物的批次标识：日期 + 篇数，笔记可能来自不同博主，没有单一博主名可用。"""
+def build_batch_id(links: list, today: date = None) -> str:
+    """生成模式二产出物的批次标识：日期 + 篇数 + 链接内容短哈希。
+
+    笔记可能来自不同博主，没有单一博主名可用；加短哈希是为了避免同一天、
+    篇数刚好相同、但链接内容不同的两次运行互相误用对方的断点续采文件。
+    """
     today = today or date.today()
-    return f"{today:%Y%m%d}_{link_count}notes"
+    digest = hashlib.sha256("\n".join(sorted(links)).encode("utf-8")).hexdigest()[:4]
+    return f"{today:%Y%m%d}_{len(links)}notes_{digest}"
 
 
 def crawl(links: list, output_dir: str) -> tuple:
-    batch_id = build_batch_id(len(links))
+    batch_id = build_batch_id(links)
     checkpoint_path = Path(output_dir) / f"{batch_id}_crawl_checkpoint.json"
     details = []
     done_ids = set()
