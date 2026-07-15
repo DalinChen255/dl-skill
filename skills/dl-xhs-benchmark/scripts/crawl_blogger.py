@@ -48,7 +48,7 @@ def crawl(user_id: str, count: int, output_dir: str) -> list:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="按选定档位采集小红书笔记详情")
+    parser = argparse.ArgumentParser(description="按指定篇数采集小红书笔记详情")
     parser.add_argument("user_id", help="小红书用户 ID（来自 scan_blogger.py 的输出）")
     parser.add_argument("--count", type=int, required=True, help="本次要采集的笔记篇数")
     parser.add_argument("-o", "--output", default="./data", help="输出目录，默认 ./data")
