@@ -56,12 +56,9 @@ def build_data_digest(name: str, profile: dict, analysis: dict) -> str:
     lines = [f"# {name} 数据底稿\n"]
 
     if profile:
-        lines.append("## 账号基础信息")
+        lines.append("## 账号基础信息（仅作身份标识，不参与分析）")
         lines.append(f"- 昵称：{profile.get('nickname', '')}")
-        lines.append(f"- 小红书号：{profile.get('red_id', '')}")
-        lines.append(f"- 简介：{profile.get('desc', '')}")
-        lines.append(f"- 粉丝数：{profile.get('fans', 0)}")
-        lines.append(f"- 获赞与收藏：{profile.get('liked_and_collected', 0)}\n")
+        lines.append(f"- 简介：{profile.get('desc', '')}\n")
 
     lines.append("## 全量统计")
     lines.append(f"- 分析笔记总数：{analysis['total']}")

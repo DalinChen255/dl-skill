@@ -27,6 +27,16 @@ def test_build_data_digest_skips_profile_section_when_profile_empty():
     assert "账号基础信息" not in digest
 
 
+def test_build_data_digest_omits_account_level_vanity_metrics():
+    digest = deep_analyze.build_data_digest(
+        "测试博主",
+        {"nickname": "测试博主", "red_id": "12345", "fans": 99999, "liked_and_collected": 88888},
+        _sample_analysis(),
+    )
+    assert "粉丝数" not in digest
+    assert "获赞与收藏" not in digest
+
+
 def test_build_ai_task_mentions_six_dimensions():
     task = deep_analyze.build_ai_task("测试博主")
     for keyword in ["标题", "开头", "中间", "结尾", "CTA", "框架"]:

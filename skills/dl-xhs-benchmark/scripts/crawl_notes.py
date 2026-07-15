@@ -22,7 +22,13 @@ def build_batch_id(links: list, today: date = None) -> str:
     return f"{today:%Y%m%d}_{len(links)}notes_{digest}"
 
 
+def dedupe_links(links: list) -> list:
+    """按输入顺序去重，避免用户重复粘贴同一条链接时把它多算一次。"""
+    return list(dict.fromkeys(links))
+
+
 def crawl(links: list, output_dir: str) -> tuple:
+    links = dedupe_links(links)
     batch_id = build_batch_id(links)
     checkpoint_path = Path(output_dir) / f"{batch_id}_crawl_checkpoint.json"
     details = []
