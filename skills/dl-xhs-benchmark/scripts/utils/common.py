@@ -1,4 +1,4 @@
-"""dl-xhs-distill 共用工具：链接解析、动态采集档位、配置与 JSON 读写。"""
+"""dl-xhs-benchmark 共用工具：链接解析、配置与 JSON 读写。"""
 
 import json
 import re
@@ -6,7 +6,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-CONFIG_DIR = Path.home() / ".dl-xhs-distill"
+CONFIG_DIR = Path.home() / ".dl-xhs-benchmark"
 CONFIG_FILE = CONFIG_DIR / "tikhub_config.json"
 
 BROWSER_USER_AGENT = (

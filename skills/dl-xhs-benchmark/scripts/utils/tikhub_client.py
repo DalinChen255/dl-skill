@@ -1,4 +1,4 @@
-"""dl-xhs-distill 的 TikHub REST 客户端，仅覆盖小红书三个端点，主选+备选两级降级。"""
+"""dl-xhs-benchmark 的 TikHub REST 客户端，仅覆盖小红书三个端点，主选+备选两级降级。"""
 
 import json
 import time
