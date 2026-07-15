@@ -1,4 +1,4 @@
-"""Phase 1: 按选定档位采集笔记详情，每 10 条自动 checkpoint。"""
+"""Phase 1: 按指定篇数采集笔记详情，每 10 条自动 checkpoint。"""
 
 import argparse
 import sys
@@ -11,12 +11,12 @@ from scripts.utils.tikhub_client import TikHubClient, TikHubError
 CHECKPOINT_EVERY = 10
 
 
-def crawl(user_id: str, tier_count: int, output_dir: str) -> list:
+def crawl(user_id: str, count: int, output_dir: str) -> list:
     scan_path = Path(output_dir) / f"{user_id}_scan.json"
     if not scan_path.exists():
         raise FileNotFoundError(f"找不到扫描结果 {scan_path}，请先运行 scan_blogger.py")
     scan_data = common.load_json(scan_path)
-    target_notes = scan_data["notes_list"][:tier_count]
+    target_notes = scan_data["notes_list"][:count]
 
     checkpoint_path = Path(output_dir) / f"{user_id}_crawl_checkpoint.json"
     details = []
@@ -50,7 +50,7 @@ def crawl(user_id: str, tier_count: int, output_dir: str) -> list:
 def main():
     parser = argparse.ArgumentParser(description="按选定档位采集小红书笔记详情")
     parser.add_argument("user_id", help="小红书用户 ID（来自 scan_blogger.py 的输出）")
-    parser.add_argument("--count", type=int, required=True, help="本次采集的笔记篇数（选定档位对应的具体数字）")
+    parser.add_argument("--count", type=int, required=True, help="本次要采集的笔记篇数")
     parser.add_argument("-o", "--output", default="./data", help="输出目录，默认 ./data")
     args = parser.parse_args()
 
