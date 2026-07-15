@@ -1,0 +1,24 @@
+name: Test Skills
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install test dependencies
+        run: pip install pytest
+
+      - name: Run dl-xhs-benchmark tests
+        run: python3 -m pytest tests/ -v
+        working-directory: skills/dl-xhs-benchmark
