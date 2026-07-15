@@ -38,10 +38,23 @@ def _sample_notes():
     ]
 
 
-def test_analyze_computes_averages_and_top10():
+def test_analyze_computes_averages_and_all_notes_sorted_by_likes():
     result = analyze.analyze(_sample_notes())
     assert result["total"] == 2
     assert result["avg_liked"] == 200.0
-    assert result["top10"][0]["note_id"] == "2"
+    assert result["all_notes"][0]["note_id"] == "2"
     assert result["image_video_ratio"] == {"image": 1, "video": 1}
     assert {"tag": "猫粮", "count": 2} in result["tag_frequency"]
+    assert "publish_rhythm" not in result
+    assert "top10" not in result
+
+
+def test_analyze_keeps_full_desc_text_untruncated():
+    long_desc = "x" * 500
+    notes = [{
+        "note_id": "1", "title": "标题", "desc": long_desc, "liked_count": 10,
+        "collected_count": 1, "comment_count": 1, "tags": [], "image_count": 1,
+        "has_video": False, "create_time": 1700000000,
+    }]
+    result = analyze.analyze(notes)
+    assert result["all_notes"][0]["desc"] == long_desc

@@ -1,4 +1,4 @@
-"""Phase 2: 全量统计 + 标题公式分类 + TOP10 筛选。"""
+"""Phase 2: 全量统计 + 标题公式分类，笔记全文交给 AI 做框架/结构拆解。"""
 
 import argparse
 import re
@@ -31,29 +31,13 @@ def classify_title_formula(title: str) -> str:
     return "未归类"
 
 
-def compute_publish_rhythm(notes: list) -> dict:
-    times = sorted(n.get("create_time", 0) for n in notes if n.get("create_time"))
-    if len(times) < 2:
-        avg_interval_days = 0.0
-    else:
-        span_seconds = times[-1] - times[0]
-        avg_interval_days = round(span_seconds / (len(times) - 1) / 86400, 2)
-    hour_distribution = Counter()
-    for n in notes:
-        ts = n.get("create_time")
-        if ts:
-            hour_distribution[str((ts // 3600) % 24)] += 1
-    return {"avg_interval_days": avg_interval_days, "hour_distribution": dict(hour_distribution)}
-
-
 def analyze(details: list) -> dict:
     total = len(details)
     if total == 0:
         return {
             "total": 0, "avg_liked": 0.0, "avg_collected": 0.0, "avg_comment": 0.0,
             "collect_like_ratio": 0.0, "image_video_ratio": {"image": 0, "video": 0},
-            "title_formula_distribution": {}, "top10": [], "tag_frequency": [],
-            "publish_rhythm": {"avg_interval_days": 0.0, "hour_distribution": {}},
+            "title_formula_distribution": {}, "all_notes": [], "tag_frequency": [],
         }
 
     avg_liked = sum(n.get("liked_count", 0) for n in details) / total
@@ -66,7 +50,7 @@ def analyze(details: list) -> dict:
 
     formula_counter = Counter(classify_title_formula(n.get("title", "")) for n in details)
 
-    top10 = sorted(details, key=lambda n: n.get("liked_count", 0), reverse=True)[:10]
+    all_notes = sorted(details, key=lambda n: n.get("liked_count", 0), reverse=True)
 
     tag_counter = Counter()
     for n in details:
@@ -83,23 +67,22 @@ def analyze(details: list) -> dict:
         "collect_like_ratio": collect_like_ratio,
         "image_video_ratio": {"image": image_count, "video": video_count},
         "title_formula_distribution": dict(formula_counter),
-        "top10": top10,
+        "all_notes": all_notes,
         "tag_frequency": tag_frequency,
-        "publish_rhythm": compute_publish_rhythm(details),
     }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="全量统计 + 标题公式分类 + TOP10 筛选")
-    parser.add_argument("details_path", help="<user_id>_notes_details.json 路径")
+    parser = argparse.ArgumentParser(description="全量统计 + 标题公式分类")
+    parser.add_argument("details_path", help="<id>_notes_details.json 路径")
     parser.add_argument("-o", "--output", default="./data", help="输出目录，默认 ./data")
     args = parser.parse_args()
 
     details = common.load_json(args.details_path)
     result = analyze(details)
 
-    user_id = Path(args.details_path).name.split("_notes_details.json")[0]
-    out_path = Path(args.output) / f"{user_id}_analysis.json"
+    file_id = Path(args.details_path).name.split("_notes_details.json")[0]
+    out_path = Path(args.output) / f"{file_id}_analysis.json"
     common.save_json(out_path, result)
     print(f"✅ 分析完成：{out_path}")
     print(f"  均赞 {result['avg_liked']} / 均藏 {result['avg_collected']} / 藏赞比 {result['collect_like_ratio']}")
