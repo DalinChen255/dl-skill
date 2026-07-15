@@ -643,7 +643,7 @@ git commit -m "feat: replace publish-rhythm stats and TOP10 excerpt with full-te
 
 **Interfaces:**
 - Consumes: `common.parse_xhs_note_link` (Task 2), `common.save_json`/`load_json`, `TikHubClient.fetch_note_detail(note_id, xsec_token)` (unchanged, existing method)
-- Produces: `crawl_notes.build_batch_id(link_count: int, today: date = None) -> str` (pure, testable); `crawl_notes.crawl(links: list, output_dir: str) -> tuple[list, str]` returning `(details, batch_id)`; CLI writes `<batch_id>_notes_details.json` with the same per-note dict shape as `crawl_blogger.py`'s output (so `analyze.py` can consume either).
+- Produces: `crawl_notes.build_batch_id(links: list, today: date = None) -> str` (pure, testable — includes a short content hash so two different link sets submitted on the same day with the same count never collide, while resubmitting the exact same link set for a resume produces the same ID); `crawl_notes.crawl(links: list, output_dir: str) -> tuple[list, str]` returning `(details, batch_id)`; CLI writes `<batch_id>_notes_details.json` with the same per-note dict shape as `crawl_blogger.py`'s output (so `analyze.py` can consume either).
 
 - [ ] **Step 1: Write the failing test**
 
@@ -658,15 +658,28 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from scripts import crawl_notes
 
 
-def test_build_batch_id_formats_date_and_count():
-    result = crawl_notes.build_batch_id(5, today=date(2026, 7, 15))
-    assert result == "20260715_5notes"
+def test_build_batch_id_formats_date_count_and_link_hash():
+    links = ["https://a", "https://b", "https://c", "https://d", "https://e"]
+    result = crawl_notes.build_batch_id(links, today=date(2026, 7, 15))
+    assert result.startswith("20260715_5notes_")
 
 
 def test_build_batch_id_uses_today_by_default():
-    result = crawl_notes.build_batch_id(3)
-    assert result.endswith("_3notes")
+    result = crawl_notes.build_batch_id(["https://a", "https://b", "https://c"])
+    assert "_3notes_" in result
     assert len(result.split("_")[0]) == 8
+
+
+def test_build_batch_id_same_links_produce_same_id_regardless_of_order():
+    links_a = ["https://a", "https://b", "https://c"]
+    links_b = ["https://c", "https://a", "https://b"]
+    assert crawl_notes.build_batch_id(links_a) == crawl_notes.build_batch_id(links_b)
+
+
+def test_build_batch_id_different_links_produce_different_id():
+    links_a = ["https://a", "https://b", "https://c"]
+    links_b = ["https://x", "https://y", "https://c"]
+    assert crawl_notes.build_batch_id(links_a) != crawl_notes.build_batch_id(links_b)
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
@@ -685,6 +698,7 @@ Create `skills/dl-xhs-benchmark/scripts/crawl_notes.py`:
 """Phase 1（模式二）：按用户提供的笔记链接列表逐条采集详情，每篇自动 checkpoint。"""
 
 import argparse
+import hashlib
 import sys
 from datetime import date
 from pathlib import Path
@@ -694,14 +708,19 @@ from scripts.utils import common
 from scripts.utils.tikhub_client import TikHubClient, TikHubError
 
 
-def build_batch_id(link_count: int, today: date = None) -> str:
-    """生成模式二产出物的批次标识：日期 + 篇数，笔记可能来自不同博主，没有单一博主名可用。"""
+def build_batch_id(links: list, today: date = None) -> str:
+    """生成模式二产出物的批次标识：日期 + 篇数 + 链接内容短哈希。
+
+    笔记可能来自不同博主，没有单一博主名可用；加短哈希是为了避免同一天、
+    篇数刚好相同、但链接内容不同的两次运行互相误用对方的断点续采文件。
+    """
     today = today or date.today()
-    return f"{today:%Y%m%d}_{link_count}notes"
+    digest = hashlib.sha256("\n".join(sorted(links)).encode("utf-8")).hexdigest()[:4]
+    return f"{today:%Y%m%d}_{len(links)}notes_{digest}"
 
 
 def crawl(links: list, output_dir: str) -> tuple:
-    batch_id = build_batch_id(len(links))
+    batch_id = build_batch_id(links)
     checkpoint_path = Path(output_dir) / f"{batch_id}_crawl_checkpoint.json"
     details = []
     done_ids = set()
@@ -1203,7 +1222,7 @@ def main():
         ])
         scan_arg = ["--scan", str(scan_path)]
     else:
-        file_id = build_batch_id(len(args.notes))
+        file_id = build_batch_id(args.notes)
         name = file_id
         run_step([
             sys.executable, str(root / "scripts" / "crawl_notes.py"), *args.notes, "-o", args.data_dir,
