@@ -2,14 +2,14 @@
 
 from pathlib import Path
 
-_REQUIRED_KEYWORDS = ["IP定位", "运营策略", "内容形式"]
+_REQUIRED_KEYWORDS = ["框架", "标题", "开头", "中间", "结尾", "CTA"]
 
 
-def check_outputs(output_dir: str, blogger_name: str) -> list:
+def check_outputs(output_dir: str, name: str) -> list:
     issues = []
     base = Path(output_dir)
 
-    html_path = base / f"{blogger_name}_蒸馏报告.html"
+    html_path = base / f"{name}_拆解报告.html"
     if not html_path.exists() or html_path.stat().st_size == 0:
         issues.append(f"缺失或为空：{html_path.name}")
     else:
@@ -18,7 +18,7 @@ def check_outputs(output_dir: str, blogger_name: str) -> list:
         if missing_keywords:
             issues.append(f"{html_path.name} 缺少必要模块关键词：{', '.join(missing_keywords)}")
 
-    skill_path = base / f"{blogger_name}_创作指南.skill"
+    skill_path = base / f"{name}_写作指南.skill"
     if not skill_path.exists():
         issues.append(f"缺失：{skill_path.name}")
     elif not skill_path.is_dir():
