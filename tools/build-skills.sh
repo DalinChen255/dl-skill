@@ -9,6 +9,11 @@ if ! command -v python3 >/dev/null 2>&1; then
   exit 1
 fi
 
+if ! git -C "$ROOT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "error: must run inside the git repository (packaging is based on git-tracked files)" >&2
+  exit 1
+fi
+
 rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR"
 
@@ -17,23 +22,30 @@ build_one() {
   local name
   name="$(basename "$skill_dir")"
 
-  python3 - "$skill_dir" "$OUT_DIR/${name}.zip" <<'PY'
+  # 只打包被 git 跟踪的文件：本地运行产物（output/、data/、缓存等）从源头上进不了发布包
+  python3 - "$ROOT_DIR" "skills/$name" "$OUT_DIR/${name}.zip" <<'PY'
 import os
+import subprocess
 import sys
 import zipfile
 
-source_dir, archive_path = sys.argv[1], sys.argv[2]
-skip_files = {"config.json", "overrides.json", ".gitignore", ".DS_Store"}
-skip_dirs = {"__pycache__"}
+root, prefix, archive_path = sys.argv[1], sys.argv[2], sys.argv[3]
+out = subprocess.run(
+    ["git", "-C", root, "ls-files", "-z", "--", prefix],
+    check=True, capture_output=True,
+).stdout
+tracked = [p.decode("utf-8") for p in out.split(b"\0") if p]
+if not tracked:
+    sys.exit(f"error: no git-tracked files under {prefix}")
+skip_top_dirs = {"tests"}
+skip_files = {".gitignore"}
 
 with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-    for root, dirs, files in os.walk(source_dir):
-        dirs[:] = [d for d in dirs if d not in skip_dirs]
-        for filename in sorted(files):
-            if filename in skip_files or filename.endswith(".pyc"):
-                continue
-            path = os.path.join(root, filename)
-            archive.write(path, os.path.relpath(path, source_dir))
+    for repo_path in sorted(tracked):
+        rel = os.path.relpath(repo_path, prefix)
+        if rel.split(os.sep)[0] in skip_top_dirs or os.path.basename(rel) in skip_files:
+            continue
+        archive.write(os.path.join(root, repo_path), rel)
 PY
 
   echo "built skills/${name}.zip"

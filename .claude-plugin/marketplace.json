@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "陈大Lin的开源 skill 合集",
-    "version": "1.2.0"
+    "version": "1.2.1"
   },
   "plugins": [
     {
@@ -13,7 +13,7 @@
       "description": "小红书专业号私信通每日客户跟进/召回：从留资客户中筛出可安全触达的对象，逐个复核后发送跟进私信。",
       "source": "./",
       "strict": false,
-      "version": "1.0.0",
+      "version": "1.2.1",
       "category": "customer-outreach",
       "keywords": [
         "xiaohongshu",
@@ -31,7 +31,7 @@
       "description": "访谈式内容深化：想法模糊或需要深度挖掘时，用访谈激发思考，20-30分钟产出高质量内容（口播稿/小红书笔记/公众号长文）。",
       "source": "./",
       "strict": false,
-      "version": "1.0.0",
+      "version": "1.2.1",
       "category": "content-creation",
       "keywords": [
         "content-creation",
@@ -49,7 +49,7 @@
       "description": "小红书对标笔记拆解器：输入对标博主链接或指定笔记链接，产出笔记结构层（标题/开头/中间/结尾/CTA/叙事框架）拆解报告，以及可 1:1 模仿或融合风格创作的写作指南 Skill 文件夹。",
       "source": "./",
       "strict": false,
-      "version": "1.0.0",
+      "version": "1.2.1",
       "category": "content-creation",
       "keywords": [
         "xiaohongshu",

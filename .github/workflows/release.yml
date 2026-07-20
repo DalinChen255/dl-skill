@@ -24,8 +24,13 @@ jobs:
             exit 1
           fi
 
+      - name: Check version consistency
+        run: python3 tools/check_versions.py
+
       - name: Build skill bundles
-        run: bash tools/build-skills.sh
+        run: |
+          bash tools/build-skills.sh
+          python3 tools/verify_bundles.py
 
       - name: Create GitHub Release
         env:

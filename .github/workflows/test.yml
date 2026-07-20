@@ -16,9 +16,33 @@ jobs:
         with:
           python-version: '3.11'
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check version consistency
+        run: python3 tools/check_versions.py
+
+      - name: Validate plugin manifest
+        run: |
+          npm install -g @anthropic-ai/claude-code@2.1.215
+          claude plugin validate .
+
       - name: Install test dependencies
         run: pip install pytest
 
       - name: Run dl-xhs-benchmark tests
         run: python3 -m pytest tests/ -v
         working-directory: skills/dl-xhs-benchmark
+
+      - name: Run dl-xhs-winback state tests
+        run: python3 skills/dl-xhs-winback/scripts/campaign_state.test.py
+
+      - name: Run dl-xhs-winback runner tests
+        run: node --test skills/dl-xhs-winback/scripts/xhs_followup_runner.test.mjs
+
+      - name: Build bundles and verify
+        run: |
+          set -euo pipefail
+          bash tools/build-skills.sh
+          python3 tools/verify_bundles.py
