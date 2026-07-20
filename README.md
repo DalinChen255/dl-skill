@@ -2,13 +2,13 @@
 
 陈大Lin的开源 Agent skill 合集。可在 Claude Code、Codex 等任意支持 skill / system prompt 的 Agent 上使用。
 
-## 工具箱
+## 解决什么问题
 
-| Skill | 做什么 |
-|---|---|
-| `dl-xhs-winback` | 小红书专业号私信通每日客户跟进/召回：从线索表和私信历史里筛出已留资、非同行、24 小时内无回复、无负面的客户，逐条复核后发送跟进私信，避免误伤已转化或已拒绝的客户 |
-| `dl-content-deepdive` | 访谈式内容深化：想法模糊或需要深度挖掘时，用访谈激发思考，20-30分钟产出高质量内容（口播稿/小红书笔记/公众号长文），不依赖任何特定项目结构，独立可用 |
-| `dl-xhs-benchmark` | 小红书对标笔记拆解器：输入对标博主链接或你自己挑的几篇笔记链接，产出笔记结构层（标题/开头/中间/结尾/CTA/叙事框架）拆解报告，以及可 1:1 模仿或融合风格创作的写作指南 Skill 文件夹 |
+| 你的处境 | 你会得到什么 | 用哪个 Skill |
+|---|---|---|
+| 在小红书接了留资线索，每天手动翻私信跟进客户太费时，还怕误发给已成交、已拒绝或同行账号 | 每天自动从线索表里筛出"该跟进的客户"（已留资、非同行、24 小时内无回复、无负面），逐条复核后代发跟进私信 | `dl-xhs-winback` |
+| 脑子里有个模糊想法，想发内容但写不出来，或者写出来总不像自己说的话 | 20-30 分钟的访谈式对话把想法挖深，产出保留你原话和表达习惯的口播稿/小红书笔记/公众号长文 | `dl-content-deepdive` |
+| 看到同行的爆款笔记想模仿，但说不清它的"套路"到底在哪 | 一份拆解报告讲透这批笔记的标题/开头/中间/结尾/CTA/叙事框架怎么写，外加一个能照着写（或只借部分套路）的 AI 写作指南 Skill | `dl-xhs-benchmark` |
 
 每个 skill 目录下都有自己的 `SKILL.md`（含使用说明和授权门禁）；部分 skill 另有 `config.example.json`（配置示例，具体哪个 skill 需要见下方安装说明）。
 
@@ -43,7 +43,11 @@ cp -R dl-skill/skills/dl-xhs-winback ~/.claude/skills/dl-xhs-winback
 
 也可以直接去 [GitHub Releases](https://github.com/DalinChen255/dl-skill/releases) 下载打包好的 `<skill>.zip`，解压后根级就是 `SKILL.md`。
 
-如果想本地构建，运行 `bash tools/build-skills.sh`，产物在 `dist/skills/`。
+如果想本地构建，运行 `bash tools/build-skills.sh`，产物在 `dist/skills/`（只会打包 git 跟踪的文件，本地运行产物不会进包）。
+
+## 版本与发布
+
+`VERSION` 文件是唯一权威版本号，`tools/check_versions.py` 会在 CI 和发布时校验它与 `marketplace.json` 里所有版本号一致。发布方式：改 `VERSION` 后打 `v<版本号>` tag 推送，GitHub Actions 会自动构建、校验并创建 Release。
 
 ## 许可证
 

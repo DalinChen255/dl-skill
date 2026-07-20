@@ -1,12 +1,10 @@
 ---
 name: dl-xhs-benchmark
 description: >
-  Use when the user wants to break down a Xiaohongshu (小红书) benchmark blogger's
-  account or a specific set of benchmark notes to extract reusable writing patterns
-  (title formula, opening, middle structure, ending, CTA, narrative framework) for
-  remixing into their own ad/placement notes.
-  Trigger on requests such as "拆解这个小红书博主""分析这几篇小红书笔记的套路"
-  "对标笔记怎么写的""帮我看看这条小红书链接怎么二创".
+  小红书对标笔记拆解器：输入对标博主链接或指定的几篇笔记链接，拆解出可复用的写作
+  套路（标题公式/开头/中间/结尾/CTA/叙事框架），产出拆解报告和可 1:1 模仿或融合
+  风格创作的写作指南 Skill。触发：拆解这个小红书博主、分析这几篇小红书笔记的套路、
+  对标笔记怎么写的、帮我看看这条小红书链接怎么二创。
 ---
 
 # dl-xhs-benchmark：小红书对标笔记拆解器
@@ -63,8 +61,9 @@ description: >
 1-2 篇高赞代表作做逐句/逐段拆解 → 产出可执行规则。不区分某个写法是博主个人习惯还是
 选题不同造成的差异，只要在框架分组里反复出现、值得抄的规律就直接写进最终产出物。
 
-具体展开到什么颗粒度，见 `docs/superpowers/specs/2026-07-15-dl-xhs-benchmark-design.md`
-第 4 节。
+具体展开到什么颗粒度：最终产出必须是可直接套用的规则（标题公式怎么写/开头怎么起/
+中间怎么推进/怎么收尾/CTA 怎么写），不停留在"观察到的现象"描述。分析时把全部笔记
+的完整文案交给 AI（不做摘要截断），因为每一篇都要被归类到某个叙事框架。
 
 ## 准备工作
 
