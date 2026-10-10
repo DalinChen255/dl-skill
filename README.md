@@ -47,21 +47,17 @@ cp -R dl-skill/skills/dl-content-deepdive ~/.claude/skills/dl-content-deepdive
 
 不熟悉 GitHub 时，可以按这三步下载：
 
-1. 打开 [GitHub Releases](https://github.com/DalinChen255/dl-skill/releases)，选择版本。`Pre-release` 表示候选版，`Latest` 表示最新正式版；两者可能是不同版本。
+1. 打开 [最新版本下载页](https://github.com/DalinChen255/dl-skill/releases/latest)。
 2. 展开该版本的 **Assets**，下载对应 Skill 的 ZIP。小红书私信跟进用 `dl-xhs-winback.zip`；内容深挖用 `dl-content-deepdive.zip`；小红书对标分析用 `dl-xhs-benchmark.zip`。GitHub 自动生成的 `Source code` 是整个仓库源码。
 3. 解压后根级就是 `SKILL.md`，按对应 Skill 的安装说明放入自己的项目。
 
-本次小红书私信跟进使用 [v1.2.2-rc.1 候选版](https://github.com/DalinChen255/dl-skill/releases/tag/v1.2.2-rc.1)，运行环境与验收范围见它的 [README](skills/dl-xhs-winback/README.md)。此前的 `dl-xhs-winback-v0.1.0-rc.1` 是临时独立编号，后续统一沿用仓库的 `1.2.x` 版本序列。
+小红书私信跟进的运行环境与使用方法见其 [README](skills/dl-xhs-winback/README.md)。
 
 如果想本地构建，运行 `bash tools/build-skills.sh`，产物在 `dist/skills/`。`dl-xhs-winback.zip` 由独立白名单构建器校验文件范围后生成，另附校验和与文件清单；其余 Skill 仍按 git 跟踪的文件构建。不要手动压缩包含客户数据或本地运行产物的目录。
 
 ## 版本与发布
 
-整个仓库使用同一个版本号，以根目录 [VERSION](VERSION) 为准。插件清单中的版本号，以及 Skill 安装包中已有的 `VERSION`，都是它的副本。合集更新时这些编号一起更新，具体功能改动见各 Skill 的说明和更新记录。
-
-`1.2.2-rc.1` 表示准备发布 `1.2.2` 的第一个候选版；正式发布时才使用 `1.2.2`。版本号本身不代表某项功能已验收，具体范围见 [小红书私信跟进更新记录](skills/dl-xhs-winback/CHANGELOG.md)。
-
-维护者发布时先运行 `python3 tools/set_version.py <版本号>`，同步所有版本副本，再更新发布说明。`python3 tools/check_versions.py` 会检查遗漏，CI 中也会自动执行。代码通过测试并推送后，给同一提交打 `v<版本号>` tag 并推送，GitHub Actions 会构建、校验安装包并创建 Release。带 `-rc.N` 的版本自动标为候选版，不替换最新正式版；校验和及文件清单会随安装包一起上传。
+版本以根目录 [VERSION](VERSION) 为准。维护者运行 `python3 tools/set_version.py <版本号>` 同步版本，再用 `python3 tools/check_versions.py` 检查。代码通过测试后，推送 `v<版本号>` tag，GitHub Actions 会自动构建并发布安装包。
 
 ## 许可证
 

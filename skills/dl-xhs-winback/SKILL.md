@@ -5,7 +5,7 @@ description: 在用户要求按 CSV 名单跟进小红书私信客户、查看�
 
 # 小红书私信跟进
 
-版本以 [VERSION](VERSION) 为准；日常操作见 [README](README.md)，变更与验收范围见 [CHANGELOG](CHANGELOG.md)。启动或继续前，用 `(await workflow.summary()).startup` 显示版本、名单范围、原话术、触达规则、待处理数、账本状态和当前控制器的暂停/发送开关；查状态本身不恢复发送。
+版本以 [VERSION](VERSION) 为准；日常操作见 [README](README.md)，更新内容见 [CHANGELOG](CHANGELOG.md)。启动或继续前，用 `(await workflow.summary()).startup` 显示版本、名单范围、原话术、触达规则、待处理数、账本状态和当前控制器的暂停/发送开关；查状态本身不恢复发送。
 
 ## 运行环境与当前授权
 

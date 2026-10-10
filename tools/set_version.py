@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Synchronize existing version mirrors; does not commit, tag, or push.
 
-Usage: python3 tools/set_version.py 1.2.2-rc.1
+Usage: python3 tools/set_version.py 1.2.2
 README and CHANGELOG remain manual editorial work.
 """
 import argparse
