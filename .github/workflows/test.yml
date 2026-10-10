@@ -25,6 +25,9 @@ jobs:
       - name: Check version consistency
         run: python3 tools/check_versions.py
 
+      - name: Test version tools
+        run: python3 tools/check_versions.test.py
+
       - name: Validate plugin manifest
         run: |
           npm install -g @anthropic-ai/claude-code@2.1.215

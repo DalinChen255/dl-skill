@@ -11,8 +11,14 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
       - name: Verify tag matches VERSION
         run: |
@@ -29,6 +35,7 @@ jobs:
 
       - name: Build skill bundles
         run: |
+          set -euo pipefail
           bash tools/build-skills.sh
           python3 tools/verify_bundles.py
 
@@ -37,7 +44,20 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          RELEASE_TITLE="${GITHUB_REF_NAME}"
+          RELEASE_FLAGS=(--prerelease=false)
+          RELEASE_NOTES='下载下方以 Skill 名称命名的 ZIP；安装步骤和运行环境见仓库 README。dl-xhs-winback.zip 另附 SHA-256 校验和及文件清单。'
+          if [[ "${GITHUB_REF_NAME}" == *-rc.* ]]; then
+            RELEASE_TITLE="${GITHUB_REF_NAME}（候选版）"
+            RELEASE_FLAGS=(--prerelease --latest=false)
+            RELEASE_NOTES+=$'\n\n这是候选版，供试用和反馈；各 Skill 的验收范围与限制见其 README 和 CHANGELOG。'
+          fi
+          shopt -s nullglob
+          RELEASE_ASSETS=(dist/skills/*.zip dist/skills/*.sha256 dist/skills/*.manifest.json)
           gh release create "${GITHUB_REF_NAME}" \
-            --title "${GITHUB_REF_NAME}" \
+            --verify-tag \
+            --title "${RELEASE_TITLE}" \
+            "${RELEASE_FLAGS[@]}" \
+            --notes "${RELEASE_NOTES}" \
             --generate-notes \
-            dist/skills/*.zip
+            "${RELEASE_ASSETS[@]}"
