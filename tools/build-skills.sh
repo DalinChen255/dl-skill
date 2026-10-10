@@ -22,6 +22,37 @@ build_one() {
   local name
   name="$(basename "$skill_dir")"
 
+  if [[ "$name" == "dl-xhs-winback" ]]; then
+    # This skill has a reviewed allowlist; never fall back to git ls-files.
+    local checked_dir="$OUT_DIR/.dl-xhs-winback-checked"
+    python3 "$ROOT_DIR/tools/build-xhs-release.py" \
+      --skill-root "$skill_dir" --output "$checked_dir"
+    python3 - "$checked_dir" "$OUT_DIR" <<'XHS_RELEASE'
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import sys
+
+checked, output = map(Path, sys.argv[1:])
+manifest_path = checked / "release-manifest.json"
+manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+versioned = checked / f"dl-xhs-winback-{manifest['version']}.zip"
+digest = hashlib.sha256(versioned.read_bytes()).hexdigest()
+if digest != manifest["archive_sha256"]:
+    sys.exit("error: checked XHS archive hash changed before final packaging")
+archive = output / "dl-xhs-winback.zip"
+shutil.move(str(versioned), str(archive))
+(output / "dl-xhs-winback.zip.sha256").write_text(
+    f"{digest}  {archive.name}\n", encoding="utf-8")
+shutil.move(str(manifest_path), str(output / "dl-xhs-winback.manifest.json"))
+(checked / (versioned.name + ".sha256")).unlink()
+checked.rmdir()
+XHS_RELEASE
+    echo "built skills/${name}.zip (reviewed public allowlist)"
+    return
+  fi
+
   # 只打包被 git 跟踪的文件：本地运行产物（output/、data/、缓存等）从源头上进不了发布包
   python3 - "$ROOT_DIR" "skills/$name" "$OUT_DIR/${name}.zip" <<'PY'
 import os

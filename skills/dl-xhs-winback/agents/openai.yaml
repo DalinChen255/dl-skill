@@ -1,4 +1,4 @@
 interface:
-  display_name: "小红书私信自动跟进"
-  short_description: "用用户列表 CSV 和 UID 复核稳定跟进私信"
-  default_prompt: "使用 $dl-xhs-winback 先确认本轮文案和账号范围，再按表格跟进、继续未完成任务、处理异常/补发或只查状态执行。"
+  display_name: "小红书私信跟进与话术复盘"
+  short_description: "按名单核查、跟进和复盘，保留暂停续接与发送证据"
+  default_prompt: "使用 $dl-xhs-winback 先检查我提供的名单、账号范围和运行环境，显示启动摘要；获得我的明确发送指令后再执行。"

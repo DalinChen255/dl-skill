@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
 
@@ -18,7 +20,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Check version consistency
         run: python3 tools/check_versions.py
@@ -35,11 +37,17 @@ jobs:
         run: python3 -m pytest tests/ -v
         working-directory: skills/dl-xhs-benchmark
 
-      - name: Run dl-xhs-winback state tests
-        run: python3 skills/dl-xhs-winback/scripts/campaign_state.test.py
+      - name: Run dl-xhs-winback state, import and analysis tests
+        run: |
+          python3 skills/dl-xhs-winback/scripts/daily_followup_state.test.py
+          python3 skills/dl-xhs-winback/scripts/daily_import.test.py
+          python3 skills/dl-xhs-winback/scripts/followup_analysis.test.py
 
-      - name: Run dl-xhs-winback runner tests
-        run: node --test skills/dl-xhs-winback/scripts/xhs_followup_runner.test.mjs
+      - name: Run dl-xhs-winback browser and workflow tests
+        run: node --test skills/dl-xhs-winback/scripts/*.test.mjs
+
+      - name: Check dl-xhs-winback fresh installation
+        run: python3 skills/dl-xhs-winback/scripts/self_check.py
 
       - name: Build bundles and verify
         run: |

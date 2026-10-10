@@ -2,3 +2,18 @@
 dist/
 docs/superpowers/
 .obsidian/
+
+# Private XHS runtime and customer records must never be published.
+.xhs-winback-private/
+private/
+skills/dl-xhs-winback/config.json
+*.sqlite3
+*.sqlite3-*
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.jsonl
+.xhs-executor.lock
+__pycache__/
+*.py[cod]

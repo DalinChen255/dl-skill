@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "dl-xhs-winback",
-      "description": "小红书专业号私信通每日客户跟进/召回：从留资客户中筛出可安全触达的对象，逐个复核后发送跟进私信。",
+      "description": "小红书私信通按 CSV 名单跟进：核查留资和拒绝联系证据，按 UID 去重，执行已授权原文并记录发送结果；当前实现需 Codex Desktop 的 CUA 环境，支持暂停恢复与话术复盘。",
       "source": "./",
       "strict": false,
       "version": "1.2.1",

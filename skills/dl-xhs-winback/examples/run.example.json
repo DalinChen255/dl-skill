@@ -1,0 +1,9 @@
+{
+  "scope_mode": "all",
+  "account_ids": [],
+  "source_import_ids": ["replace-with-import-result"],
+  "messages": {
+    "ad": "仅供离线自检的虚构话术，不用于真实发送。",
+    "natural": "仅供离线自检的虚构话术，不用于真实发送。"
+  }
+}

@@ -1,4 +1,23 @@
+# Runtime/customer data belongs outside the installed skill.
+private/
+.xhs-winback-private/
 config.json
 overrides.json
+.env
+.env.*
+*.sqlite*
+*.db
+*.db-*
+*.jsonl
+*.log
+workflow-progress-*
+*.reviews/
+.xhs-executor.lock*
 __pycache__/
-*.pyc
+*.py[cod]
+.DS_Store
+screenshots/
+reports/
+backups/
+*.csv
+!examples/users.example.csv
