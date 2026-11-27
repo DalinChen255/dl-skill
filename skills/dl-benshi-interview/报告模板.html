@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  商业模式诊断报告模板（第六版）
+  给 AI 的说明：
+  1. 复制本文件，另存为「商业模式诊断报告-<姓名或代号>-<日期>.html」，只改副本。
+  2. 把所有【……】换成真实内容。卡片、表格行、列表按实际数量增删，不为凑数补；没有内容的小块整块删掉。
+  3. 每一部分开头的 .lead 一句结论必须写。
+  4. 来源标签按实际改：
+       <span class="src ev">依据</span>  他的话或他的事
+       <span class="src in">推断</span>  从事实推出来的
+       <span class="src rf">参考</span>  参考数或搜到的
+       <span class="src hy">假设</span>  还没验证的产品、价格
+  5. 原话用 <q>……</q>。
+  6. 算账的产能条：.cap 的 style="--use:已用小时;--all:每月可用小时"。
+  7. 待验证清单：<span class="pill ok">已站住</span> 或 <span class="pill todo">待验证</span>。
+  8. 不写类型名、不贴标签；正文不出现“弱”“缺口”“证据不够”，这些只写进附录的待验证。
+  9. 写完逐段检查：换一个人名还成立的句子，删掉或改具体。
+  10. 同步更新页面底部的 diag-state。
+-->
+<title>商业模式诊断报告</title>
+<style>
+:root{
+  --bg:#f3f2ee; --paper:#ffffff; --ink:#1b1d22; --muted:#666a73; --line:#e3e1db; --soft:#f6f5f1;
+  --navy:#1f3a5f; --navy-soft:#e7edf5; --accent:#b5542b; --accent-soft:#f7e9e1;
+  --ok:#2e7350; --ok-bg:#e3f1e8; --todo:#946400; --todo-bg:#faf0d6; --risk:#a23b3b; --risk-bg:#f8e5e3;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121417; --paper:#1b1e23; --ink:#e9eaec; --muted:#a2a6ad; --line:#2f333a; --soft:#22262c;
+    --navy:#8fb3e0; --navy-soft:#1c2a3b; --accent:#e08a5f; --accent-soft:#3a281f;
+    --ok:#7cc59a; --ok-bg:#1d3226; --todo:#e0b44f; --todo-bg:#3a3020; --risk:#ec8f8f; --risk-bg:#3b2222;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121417; --paper:#1b1e23; --ink:#e9eaec; --muted:#a2a6ad; --line:#2f333a; --soft:#22262c;
+  --navy:#8fb3e0; --navy-soft:#1c2a3b; --accent:#e08a5f; --accent-soft:#3a281f;
+  --ok:#7cc59a; --ok-bg:#1d3226; --todo:#e0b44f; --todo-bg:#3a3020; --risk:#ec8f8f; --risk-bg:#3b2222;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+  font-size:16px;line-height:1.8}
+.wrap{max-width:900px;margin:0 auto;padding:28px 16px 64px}
+p{margin:8px 0}
+q{quotes:"「" "」"} q::before{content:open-quote} q::after{content:close-quote}
+ul,ol{padding-left:1.3em} li{margin:3px 0}
+
+/* 封面 */
+.cover{background:var(--navy);color:#fff;border-radius:6px;padding:44px 40px 36px;margin-bottom:22px}
+.cover .kind{font-size:13px;letter-spacing:.3em;opacity:.75}
+.cover h1{font-size:34px;margin:10px 0 4px;letter-spacing:.04em}
+.cover .who{font-size:15px;opacity:.85}
+.cover .meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.22);font-size:13px;opacity:.8}
+
+/* 章节 */
+section{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:34px 38px 30px;margin-bottom:22px}
+.sec{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--navy);padding-bottom:10px;margin-bottom:16px}
+.sec .no{font-size:15px;font-weight:700;color:var(--navy);letter-spacing:.1em}
+.sec h2{font-size:23px;margin:0}
+.lead{font-size:17px;font-weight:600;color:var(--navy);margin:0 0 18px}
+h3{font-size:17px;margin:26px 0 8px;padding-left:10px;border-left:3px solid var(--accent)}
+.muted{color:var(--muted);font-size:14px}
+
+/* 来源标签 */
+.src{display:inline-block;font-size:11.5px;line-height:1;padding:3px 6px;border-radius:3px;margin-left:4px;vertical-align:2px;white-space:nowrap;border:1px solid}
+.src.ev{color:var(--ok);border-color:var(--ok)} .src.in{color:var(--todo);border-color:var(--todo)}
+.src.rf{color:var(--navy);border-color:var(--navy)} .src.hy{color:var(--risk);border-color:var(--risk);border-style:dashed}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12.5px;color:var(--muted);margin-top:18px}
+
+/* 一 诊断结论 */
+.verdict{background:var(--navy-soft);border-left:5px solid var(--navy);padding:18px 22px;border-radius:0 6px 6px 0;font-size:18px;font-weight:600;line-height:1.75}
+.basis{margin:14px 0 4px;font-size:15px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.box{padding:16px 18px;border-radius:6px}
+.box .t{font-size:13px;font-weight:700;letter-spacing:.08em;margin-bottom:6px}
+.box.chance{background:var(--ok-bg)} .box.chance .t{color:var(--ok)}
+.box.risk{background:var(--risk-bg)} .box.risk .t{color:var(--risk)}
+.first3{counter-reset:f;list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px}
+.first3 li{counter-increment:f;display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;padding:12px 14px;background:var(--soft);border-radius:6px;margin:0}
+.first3 li::before{content:counter(f);width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+
+/* 二 你手上有什么 */
+.knack{margin:14px 0;padding:16px 20px;background:var(--accent-soft);border-radius:6px}
+.knack .t{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.08em}
+.facts{width:100%;border-collapse:collapse;font-size:15px}
+.facts th,.facts td{text-align:left;vertical-align:top;padding:10px 8px;border-bottom:1px solid var(--line)}
+.facts th{width:7em;color:var(--muted);font-weight:600;font-size:14px}
+.cond{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cond div{background:var(--soft);border-radius:6px;padding:12px 14px}
+.cond b{display:block;font-size:19px;color:var(--navy)}
+.cond span{font-size:13px;color:var(--muted)}
+.so{display:grid;gap:10px}
+.so div{display:grid;grid-template-columns:1fr 1.2em 1fr;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:6px;font-size:15px}
+.so i{font-style:normal;color:var(--accent);font-weight:700;text-align:center}
+
+/* 三 商业模式 */
+.canvas{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.canvas div{padding:12px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.65}
+.canvas div:nth-child(3n){border-right:none} .canvas div:nth-last-child(-n+3){border-bottom:none}
+.canvas span{display:block;font-size:12.5px;font-weight:700;color:var(--navy);letter-spacing:.06em;margin-bottom:4px}
+.canvas .core{background:var(--navy-soft)}
+.ladder{display:grid;gap:12px}
+.step{display:grid;grid-template-columns:110px 1fr;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.step .lv{background:var(--soft);padding:14px;display:flex;flex-direction:column;justify-content:center}
+.step .lv b{font-size:15px} .step .lv span{font-size:22px;font-weight:700;color:var(--navy);margin-top:4px}
+.step.main{border:2px solid var(--accent)} .step.main .lv{background:var(--accent-soft)} .step.main .lv span{color:var(--accent)}
+.step .body{padding:14px 16px;font-size:15px}
+.step dl{display:grid;grid-template-columns:5.5em 1fr;gap:4px 12px;margin:0}
+.step dt{color:var(--muted)} .step dd{margin:0}
+.step .gate{margin-top:8px;font-size:14px;color:var(--navy)}
+.next{margin-top:12px;padding:12px 16px;border:1px dashed var(--accent);border-radius:6px;font-size:15px}
+.calc{width:100%;border-collapse:collapse;font-size:15px;margin:6px 0 14px}
+.calc td{padding:9px 8px;border-bottom:1px solid var(--line)} .calc td:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.calc tr.total td{border-bottom:2px solid var(--navy);color:var(--navy)}
+.cap{margin:10px 0 4px}
+.cap .bar{height:14px;border-radius:7px;background:var(--soft);overflow:hidden;border:1px solid var(--line)}
+.cap .fill{display:block;height:100%;width:calc(var(--use) / var(--all) * 100%);max-width:100%;background:var(--navy)}
+.cap .lab{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:4px}
+.combos{width:100%;border-collapse:collapse;font-size:14.5px}
+.combos th,.combos td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.combos th{font-size:13px;color:var(--muted)}
+.combos tr.rec td{background:var(--accent-soft)} .combos .tag{font-size:12px;font-weight:700;color:var(--accent)}
+.fit{width:100%;border-collapse:collapse;font-size:15px}
+.fit td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top} .fit td:first-child{width:40%;color:var(--muted)}
+
+/* 四 风险 */
+.risks{display:grid;gap:12px}
+.risk{border:1px solid var(--line);border-left:4px solid var(--risk);border-radius:6px;padding:14px 18px}
+.risk h4{margin:0 0 6px;font-size:16px}
+.risk dl{display:grid;grid-template-columns:6em 1fr;gap:4px 12px;margin:0;font-size:15px}
+.risk dt{color:var(--muted)} .risk dd{margin:0}
+
+/* 五 替代方案 */
+.alt{width:100%;border-collapse:collapse;font-size:15px}
+.alt th,.alt td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.alt th{font-size:13px;color:var(--muted)}
+
+/* 六 处方 */
+.today{background:var(--accent);color:#fff;border-radius:6px;padding:18px 22px}
+.today .t{font-size:13px;letter-spacing:.1em;opacity:.9} .today b{display:block;font-size:19px;margin:4px 0}
+.msg{white-space:pre-wrap;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:14px 16px;font-size:15px;margin-top:10px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:8px 0}
+.week div{background:var(--soft);border-radius:6px;padding:10px 8px;font-size:13.5px;line-height:1.5}
+.week b{display:block;color:var(--accent);font-size:12px}
+.rule{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.rule div{border-radius:6px;padding:12px 14px;font-size:14.5px}
+.rule .go{background:var(--ok-bg)} .rule .fix{background:var(--todo-bg)} .rule .stop{background:var(--risk-bg)}
+.rule b{display:block}
+.horizon{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.horizon div{border:1px solid var(--line);border-radius:6px;padding:14px 16px;font-size:15px}
+.horizon b{display:block;color:var(--navy);margin-bottom:4px}
+
+/* 附录 */
+.quotes{font-size:14.5px} .quotes li{margin:6px 0}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.check{width:100%;min-width:560px;border-collapse:collapse;font-size:14.5px}
+.check th,.check td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.check th{font-size:13px;color:var(--muted)}
+.pill{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 10px;border-radius:999px;white-space:nowrap}
+.pill.ok{color:var(--ok);background:var(--ok-bg)} .pill.todo{color:var(--todo);background:var(--todo-bg)}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
+
+@media (max-width:680px){
+  .cover{padding:30px 20px 26px} .cover h1{font-size:26px}
+  section{padding:24px 18px 22px}
+  .grid2,.horizon{grid-template-columns:1fr}
+  .cond{grid-template-columns:1fr 1fr}
+  .so div{grid-template-columns:1fr} .so i{transform:rotate(90deg);justify-self:start}
+  .canvas{grid-template-columns:1fr} .canvas div{border-right:none!important;border-bottom:1px solid var(--line)!important}
+  .step{grid-template-columns:1fr} .step dl{grid-template-columns:1fr} .step dt{margin-top:4px}
+  .risk dl{grid-template-columns:1fr} .risk dt{margin-top:4px}
+  .week{grid-template-columns:1fr 1fr} .rule{grid-template-columns:1fr}
+  .combos,.alt{font-size:14px}
+}
+@media print{
+  body{background:#fff;font-size:11pt} .wrap{max-width:none;padding:0}
+  .cover{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  section{border:none;padding:0 0 14pt;break-inside:auto} .sec{break-after:avoid}
+  .table-wrap{overflow:visible} .check{min-width:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kind">商 业 模 式 诊 断 报 告</div>
+  <h1>【姓名或代号】</h1>
+  <div class="who">【现在做什么、干了几年】</div>
+  <div class="meta"><span>诊断日期：【日期】</span><span>依据：你讲的 3 件事、【N】份材料、【N】个回答</span><span>产品、价格和人群是假设，做了才知道</span></div>
+</header>
+
+<!-- 一 -->
+<section id="s1">
+  <div class="sec"><span class="no">一</span><h2>诊断结论</h2></div>
+  <div class="verdict">【一句话诊断：你适合做什么生意，用什么来人，用什么收钱。大白话，不起名字】</div>
+  <div class="basis"><b>依据：</b>【他的两三处原话或事实，用 <q></q> 引原话】<span class="src ev">依据</span></div>
+  <div class="grid2">
+    <div class="box chance"><div class="t">最大的机会</div>【】</div>
+    <div class="box risk"><div class="t">最大的风险</div>【一到两个】</div>
+  </div>
+  <h3>最先做的三件事</h3>
+  <ol class="first3"><li>【今天】</li><li>【7 天内】</li><li>【30 天内】</li></ol>
+  <div class="legend">
+    <span><span class="src ev">依据</span> 你的话或你的事</span><span><span class="src in">推断</span> 从事实推出来的</span>
+    <span><span class="src rf">参考</span> 参考数或搜到的</span><span><span class="src hy">假设</span> 还没验证</span>
+  </div>
+</section>
+
+<!-- 二 -->
+<section id="s2">
+  <div class="sec"><span class="no">二</span><h2>你手上已经有什么</h2></div>
+  <p class="lead">【一句结论：你已经有的、最值钱的是什么】</p>
+  <h3>你反复被人需要的那件事</h3>
+  <p>【他具体怎么帮人，配他的事和原话】</p>
+  <div class="knack"><div class="t">你的门道</div>【他觉得平常、别人做不到的那一步，用他的原话或做法】</div>
+  <h3>已经发生的证据</h3>
+  <table class="facts">
+    <tr><th>【谁 · 何时】</th><td>【发生了什么、结果如何】<span class="src ev">依据</span></td></tr>
+  </table>
+  <h3>你的条件</h3>
+  <div class="cond">
+    <div><b>【N 小时】</b><span>每月能拿出的时间</span></div>
+    <div><b>【N 个】</b><span>能直接找的人</span></div>
+    <div><b>【N 粉】</b><span>账号</span></div>
+    <div><b>【N 件】</b><span>能拿出来的作品和工具</span></div>
+  </div>
+  <p class="muted">【时间怎么折算的】</p>
+  <h3>你的做事方式，对生意意味着什么</h3>
+  <div class="so">
+    <div><span>因为你【他的回答或原话】</span><i>→</i><span>所以这门生意要【设计上的要求】</span></div>
+  </div>
+</section>
+
+<!-- 三 -->
+<section id="s3">
+  <div class="sec"><span class="no">三</span><h2>商业模式设计</h2></div>
+  <p class="lead">【一句结论：这门生意长什么样】</p>
+  <h3>一张图看懂</h3>
+  <div class="canvas">
+    <div><span>你要付出的</span>【时间、钱、精力上限】</div>
+    <div class="core"><span>你帮他的方式</span>【】</div>
+    <div><span>客户</span>【具体处境】</div>
+    <div><span>你手上的东西</span>【门道、作品、工具、证据】</div>
+    <div class="core"><span>他要办成的事</span>【】</div>
+    <div><span>怎么找到他</span>【】</div>
+    <div><span>你要做的事</span>【每周固定做的几件】</div>
+    <div class="core"><span>怎么收钱</span>【】</div>
+    <div><span>关系</span>【一次性 / 按月 / 社群】</div>
+  </div>
+  <h3>客户</h3>
+  <table class="facts">
+    <tr><th>他是谁</th><td>【具体处境，不写年龄性别】</td></tr>
+    <tr><th>他现在怎么解决</th><td>【】</td></tr>
+    <tr><th>为什么不满意</th><td>【】</td></tr>
+    <tr><th>凭什么找你</th><td>【挂回他的证据】</td></tr>
+  </table>
+  <h3>产品阶梯</h3>
+  <div class="ladder">
+    <div class="step"><div class="lv"><b>免费</b><span>¥0</span></div><div class="body"><dl>
+      <dt>给谁</dt><dd>【】</dd><dt>交付</dt><dd>【】</dd><dt>作用</dt><dd>【让对的人来找你】</dd></dl></div></div>
+    <div class="step main"><div class="lv"><b>第一个收费产品</b><span>¥【】</span></div><div class="body"><dl>
+      <dt>给谁</dt><dd>【】</dd><dt>交付</dt><dd>【交付物清单】</dd><dt>形式时长</dt><dd>【】</dd>
+      <dt>定价</dt><dd>【算式】<span class="src hy">假设</span></dd></dl>
+      <div class="gate">做到【】→ 开始卖升级的一级</div></div></div>
+    <div class="step"><div class="lv"><b>升级</b><span>¥【】</span></div><div class="body"><dl>
+      <dt>给谁</dt><dd>【买过第一级、还想往前走的人】</dd><dt>交付</dt><dd>【】</dd><dt>形式时长</dt><dd>【】</dd>
+      <dt>定价</dt><dd>【】<span class="src hy">假设</span></dd></dl></div></div>
+  </div>
+  <div class="next"><b>买过第一级的人，下一步去哪：</b>【回访、升级、转介绍各怎么接】</div>
+  <h3>算一笔账</h3>
+  <table class="calc">
+    <tr><td>你的目标（区间下限）</td><td>【¥/月】</td></tr>
+    <tr><td>÷ 第一个收费产品单价</td><td>【¥】</td></tr>
+    <tr class="total"><td>= 每月要成交</td><td>【N 单】</td></tr>
+    <tr><td>÷ 成交率（【熟人 / 陌生】参考）<span class="src rf">参考</span></td><td>【%】</td></tr>
+    <tr class="total"><td>= 每月要聊的人</td><td>【N 人】</td></tr>
+  </table>
+  <div class="cap" style="--use:【已用】;--all:【可用】">
+    <div><b>产能：</b>每单约【N】小时 × 【N】单 = 【N】小时 / 月，你每月能拿出约【N】小时</div>
+    <div class="bar"><span class="fill"></span></div>
+    <div class="lab"><span>要用 【N】 小时</span><span>能拿出 【N】 小时</span></div>
+  </div>
+  <table class="combos">
+    <tr><th>组合</th><th>怎么卖</th><th>每月收入</th><th>每月要聊</th><th>每月花的时间</th></tr>
+    <tr class="rec"><td><span class="tag">推荐</span><br>【】</td><td>【】</td><td>【】</td><td>【】</td><td>【】</td></tr>
+    <tr><td>【】</td><td>【】</td><td>【】</td><td>【】</td><td>【】</td></tr>
+  </table>
+  <p>【要做到，还差哪一块，先补哪一块】</p>
+  <h3>为什么这个模式适合你</h3>
+  <table class="fit">
+    <tr><td>交付方式和你做着舒服的事一致吗</td><td>【】</td></tr>
+    <tr><td>每月要的时间你拿得出来吗</td><td>【】</td></tr>
+    <tr><td>你说过的卡点，模式里防住了吗</td><td>【】</td></tr>
+  </table>
+</section>
+
+<!-- 四 -->
+<section id="s4">
+  <div class="sec"><span class="no">四</span><h2>风险和对策</h2></div>
+  <p class="lead">【一句结论：最可能卡住你的是什么】</p>
+  <div class="risks">
+    <div class="risk"><h4>【风险一】</h4><dl>
+      <dt>为什么是你</dt><dd>【挂回他的话或事】</dd><dt>对策</dt><dd>【】</dd><dt>最早的信号</dt><dd>【】</dd></dl></div>
+  </div>
+</section>
+
+<!-- 五 -->
+<section id="s5">
+  <div class="sec"><span class="no">五</span><h2>考虑过、但现在不建议的方案</h2></div>
+  <table class="alt">
+    <tr><th>方案</th><th>为什么现在不选</th><th>什么情况下可以回头看</th></tr>
+    <tr><td>【】</td><td>【】</td><td>【】</td></tr>
+  </table>
+</section>
+
+<!-- 六 -->
+<section id="s6">
+  <div class="sec"><span class="no">六</span><h2>行动处方</h2></div>
+  <div class="today"><div class="t">今天 · 10 分钟</div><b>【把下面这段话发给【谁】】</b>他回了什么，贴回来，诊断会更新。</div>
+  <div class="msg">【用他的说话方式：注意到对方遇到的事；能帮他做什么；多久、多少钱；要不要试。不夸大，不催】</div>
+  <h3>7 天</h3>
+  <div class="week">
+    <div><b>第 1 天</b>【】</div><div><b>第 2 天</b>【】</div><div><b>第 3 天</b>【】</div><div><b>第 4 天</b>【】</div>
+    <div><b>第 5 天</b>【】</div><div><b>第 6 天</b>【】</div><div><b>第 7 天</b>【对照下面三条】</div>
+  </div>
+  <div class="rule"><div class="go"><b>继续</b>【】</div><div class="fix"><b>改一处</b>【】</div><div class="stop"><b>换方向</b>【】</div></div>
+  <div class="horizon">
+    <div><b>30 天</b>【要做到什么、看哪个数】</div>
+    <div><b>90 天</b>【要做到什么、看哪个数】</div>
+  </div>
+</section>
+
+<!-- 附 -->
+<section id="s7">
+  <div class="sec"><span class="no">附</span><h2>依据和待验证</h2></div>
+  <h3>报告用到的原话和事实</h3>
+  <ol class="quotes"><li>【原话或事实 · 出自哪件事】</li></ol>
+  <h3>待验证清单</h3>
+  <div class="table-wrap"><table class="check">
+    <tr><th>判断</th><th>状态</th><th>依据</th><th>下一步</th></tr>
+    <tr><td>【】</td><td><span class="pill ok">已站住</span></td><td>【】</td><td>—</td></tr>
+    <tr><td>【】</td><td><span class="pill todo">待验证</span></td><td>【】</td><td>【去问谁、问什么】</td></tr>
+  </table></div>
+  <p class="muted" style="margin-top:14px">要把这份报告发给别人看，先删掉公司和客户能被认出来的信息。</p>
+</section>
+
+<footer>商业模式诊断 · 第六版</footer>
+</div>
+
+<script type="application/json" id="diag-state">
+{
+  "name": "", "date": "",
+  "stories": [],
+  "judgement": {"text": "", "user_feedback": ""},
+  "choices": [],
+  "conditions": {"hours_per_month": "", "people": "", "account": "", "goal": ""},
+  "verdict": "",
+  "plan": {},
+  "replies": [],
+  "resume_at": ""
+}
+</script>
+</body>
+</html>
