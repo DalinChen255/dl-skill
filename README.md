@@ -6,24 +6,32 @@
 
 | 你的处境 | 你会得到什么 | 用哪个 Skill |
 |---|---|---|
-| 想试着接第一单，或想理清下一单怎么做 | 一份结合你个人经历的《商业模式诊断报告》 | [商业模式诊断](skills/dl-benshi-interview/README.md) |
+| 想试着接第一单，或想理清下一单怎么做 | 一份结合你个人经历的《商业模式诊断报告》 | [商业模式诊断](skills/dl-benshi-interview/README.md) · [复制提示词到普通 AI](skills/dl-benshi-interview/提示词-通用版.md#提示词正文) |
 | 按小红书客户名单跟进时，需要逐一核对留资、拒绝联系和多账号会话，暂停后还要接着处理 | 合并 CSV 名单并按 UID 去重；保护已留资、有无意向标签或明确拒绝联系的客户，按使用者授权的原文跟进，记录成功、失败和待核实结果。新批次默认每人每轮一次；同行或固定 24 小时间隔不作为单独排除条件 | [`dl-xhs-winback`](skills/dl-xhs-winback/README.md) |
 | 脑子里有个模糊想法，想发内容但写不出来，或者写出来总不像自己说的话 | 20-30 分钟的访谈式对话把想法挖深，产出保留你原话和表达习惯的口播稿/小红书笔记/公众号长文 | `dl-content-deepdive` |
 | 看到同行的爆款笔记想模仿，但说不清它的"套路"到底在哪 | 一份拆解报告讲透这批笔记的标题/开头/中间/结尾/CTA/叙事框架怎么写，外加一个能照着写（或只借部分套路）的 AI 写作指南 Skill | `dl-xhs-benchmark` |
 
-每个工具的目录里都有 `SKILL.md`。`dl-content-deepdive` 和 `dl-xhs-benchmark` 可在 Claude Code、Codex 等支持 skill / system prompt 的 Agent 上使用。`dl-xhs-winback` 需要 Codex Desktop 的 CUA 环境。
+每个工具的目录里都有 `SKILL.md`。商业模式诊断、内容深挖和小红书对标分析可在 Claude Code 或 Codex 中使用。`dl-xhs-winback` 需要 Codex Desktop 的 CUA 环境。
 
 ## 如何安装
 
 #### Claude Code
 
+第一次安装时，在终端添加插件市场。已经添加过的人运行 `claude plugin marketplace update dl-skill` 刷新列表。
+
 ```bash
 claude plugin marketplace add DalinChen255/dl-skill
+```
+
+按需要运行其中一条安装命令。
+
+```bash
+claude plugin install dl-benshi-interview@dl-skill
 claude plugin install dl-content-deepdive@dl-skill
 claude plugin install dl-xhs-benchmark@dl-skill
 ```
 
-以上 Claude Code 安装方式用于 `dl-content-deepdive` 和 `dl-xhs-benchmark`。`dl-xhs-winback` 目前依赖 Codex Desktop 的 CUA tab API；安装其文件本身不会提供浏览器控制能力。
+装好商业模式诊断后，在新对话里说“帮我找找我能卖什么”。
 
 #### 手动安装
 
@@ -36,7 +44,7 @@ cp -R dl-skill/skills/dl-content-deepdive ~/.claude/skills/dl-content-deepdive
 # 或 Codex: cp -R dl-skill/skills/dl-content-deepdive ~/.codex/skills/dl-content-deepdive
 ```
 
-使用 Claude Code 或 Codex 做商业模式诊断时，将整个 `dl-skill/skills/dl-benshi-interview` 文件夹复制到 `~/.claude/skills/` 或 `~/.codex/skills/`，保留里面的诊断依据和报告模板。然后在新对话里说“帮我找找我能卖什么”。
+要手动安装商业模式诊断，把整个 `dl-skill/skills/dl-benshi-interview` 文件夹复制到 Codex 的 `~/.agents/skills/` 或 Claude Code 的 `~/.claude/skills/`。
 
 `dl-xhs-winback`：把 `skills/dl-xhs-winback/` 放到你选定项目的 `.agents/skills/dl-xhs-winback/`，在 Codex Desktop 中打开该项目。建议使用 Python 3.10+ 和 Node.js 24，并具备 CUA 浏览器控制、本地文件访问及启动 Python 的权限；当前只在 macOS 环境完成验证。先运行 `scripts/self_check.py` 做临时数据自检，再只读核查自己已登录的小红书私信通页面。完整步骤见[安装与使用说明](skills/dl-xhs-winback/README.md)。
 
@@ -48,11 +56,9 @@ cp -R dl-skill/skills/dl-content-deepdive ~/.claude/skills/dl-content-deepdive
 
 #### 从 Release 下载
 
-商业模式诊断第七版可以直接用页首的免安装提示词，或按上面的手动安装步骤获取。下面是另外三个工具的 ZIP 下载方式。
+商业模式诊断可以[直接下载 dl-benshi-interview.zip](https://github.com/DalinChen255/dl-skill/releases/latest/download/dl-benshi-interview.zip)。解压后，打开里面的 `README.md`，选择普通 AI 聊天或本地安装。
 
-1. 打开 [最新版本下载页](https://github.com/DalinChen255/dl-skill/releases/latest)。
-2. 展开该版本的 **Assets**，下载对应 Skill 的 ZIP。小红书私信跟进用 `dl-xhs-winback.zip`；内容深挖用 `dl-content-deepdive.zip`；小红书对标分析用 `dl-xhs-benchmark.zip`。GitHub 自动生成的 `Source code` 是整个仓库源码。
-3. 解压后根级就是 `SKILL.md`，按对应 Skill 的安装说明放入自己的项目。
+其他三个工具在[最新版本下载页](https://github.com/DalinChen255/dl-skill/releases/latest)的 **Assets** 里。小红书私信跟进下载 `dl-xhs-winback.zip`，内容深挖下载 `dl-content-deepdive.zip`，小红书对标分析下载 `dl-xhs-benchmark.zip`。将压缩包解压到与工具同名的文件夹，确认打开文件夹就能看到 `SKILL.md`，再按上面的手动安装说明放到对应位置。
 
 小红书私信跟进的运行环境与使用方法见其 [README](skills/dl-xhs-winback/README.md)。
 
@@ -60,7 +66,9 @@ cp -R dl-skill/skills/dl-content-deepdive ~/.claude/skills/dl-content-deepdive
 
 ## 版本与发布
 
-版本以根目录 [VERSION](VERSION) 为准。维护者运行 `python3 tools/set_version.py <版本号>` 同步版本，再用 `python3 tools/check_versions.py` 检查。代码通过测试后，推送 `v<版本号>` tag，GitHub Actions 会自动构建并发布安装包。
+新增公开工具时，名称沿用 `dl-领域-功能`，例如 `dl-benshi-interview`。把它加入[插件清单](.claude-plugin/marketplace.json)，更新首页和工具自己的安装说明。提交标题写清这次改了什么。
+
+合集版本以根目录 [VERSION](VERSION) 为准。运行 `python3 tools/set_version.py <版本号>` 同步版本，再用 `python3 tools/check_versions.py` 检查。主分支测试通过后，推送 `v<版本号>` 标签，GitHub Actions 会自动构建并发布安装包。在发布页写明这版改了什么，再从发布页下载核对。
 
 ## 许可证
 

@@ -2,7 +2,7 @@
 """校验构建产物。
 
 三条规则：
-1. dist/skills/ 里的 zip 必须与插件清单和单独分发的 Skill 逐一对应
+1. dist/skills/ 里的 zip 必须与插件清单中的 Skill 逐一对应
 2. 每个 zip 里绝不允许出现本地运行产物目录（output/、data/、缓存、tests/）
 3. 每个 zip 解压后根级必须有 SKILL.md（README 对用户的承诺）
 """
@@ -12,7 +12,6 @@ import sys
 import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-STANDALONE_SKILLS = {"dl-benshi-interview"}
 FORBIDDEN = ("output/", "data/", ".pytest_cache/", "__pycache__/", "tests/")
 
 
@@ -22,10 +21,9 @@ def main() -> int:
     )["plugins"]
     zips = sorted((ROOT / "dist" / "skills").glob("*.zip"))
 
-    plugin_skills = {
+    expected = {
         pathlib.Path(skill).name for plugin in plugins for skill in plugin["skills"]
     }
-    expected = plugin_skills | STANDALONE_SKILLS
     actual = {path.stem for path in zips}
     if actual != expected:
         print(
