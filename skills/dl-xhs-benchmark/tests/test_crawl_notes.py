@@ -33,3 +33,8 @@ def test_build_batch_id_different_links_produce_different_id():
 def test_dedupe_links_removes_duplicates_and_preserves_order():
     links = ["https://a", "https://b", "https://a", "https://c"]
     assert crawl_notes.dedupe_links(links) == ["https://a", "https://b", "https://c"]
+
+
+def test_batch_id_matches_details_file_for_repeated_paste():
+    links = ["https://a", "https://b", "https://a"]
+    assert crawl_notes.build_batch_id(links) == crawl_notes.build_batch_id(["https://a", "https://b"])

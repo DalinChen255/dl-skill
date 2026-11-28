@@ -246,13 +246,9 @@ class TikHubClient:
 
     def _parse_note_detail_web_v3(self, raw, note_id):
         items = self._dig(raw, "data", "data", "items", default=[]) or []
-        if not items:
-            return {
-                "note_id": note_id, "title": "", "desc": "", "type": "normal", "create_time": 0,
-                "liked_count": 0, "collected_count": 0, "comment_count": 0, "share_count": 0,
-                "tags": [], "image_count": 0, "has_video": False, "comments": [],
-            }
-        card = items[0].get("noteCard", {}) or {}
+        card = items[0].get("noteCard") if items else None
+        if not card:
+            raise TikHubError(f"未获取到笔记详情（note_id={note_id}），请核对笔记能否公开打开。")
         interact = card.get("interactInfo", {}) or {}
         tags = card.get("tagList") or []
         images = card.get("imageList") or []

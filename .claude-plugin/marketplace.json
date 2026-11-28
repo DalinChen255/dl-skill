@@ -4,8 +4,8 @@
     "name": "DalinChen255"
   },
   "metadata": {
-    "description": "陈大Lin的开源 skill 合集",
-    "version": "1.3.0"
+    "description": "陈大lin 的 AI 工具：商业模式诊断、内容深挖、小红书笔记拆解与私信跟进。",
+    "version": "1.3.1"
   },
   "plugins": [
     {
@@ -13,7 +13,7 @@
       "description": "小红书私信通按 CSV 名单跟进：核查留资和拒绝联系证据，按 UID 去重，执行已授权原文并记录发送结果；当前实现需 Codex Desktop 的 CUA 环境，支持暂停恢复与话术复盘。",
       "source": "./",
       "strict": false,
-      "version": "1.3.0",
+      "version": "1.3.1",
       "category": "customer-outreach",
       "keywords": [
         "xiaohongshu",
@@ -31,7 +31,7 @@
       "description": "访谈式内容深化：想法模糊或需要深度挖掘时，用访谈激发思考，20-30分钟产出高质量内容（口播稿/小红书笔记/公众号长文）。",
       "source": "./",
       "strict": false,
-      "version": "1.3.0",
+      "version": "1.3.1",
       "category": "content-creation",
       "keywords": [
         "content-creation",
@@ -49,7 +49,7 @@
       "description": "小红书对标笔记拆解器：输入对标博主链接或指定笔记链接，产出笔记结构层（标题/开头/中间/结尾/CTA/叙事框架）拆解报告，以及可 1:1 模仿或融合风格创作的写作指南 Skill 文件夹。",
       "source": "./",
       "strict": false,
-      "version": "1.3.0",
+      "version": "1.3.1",
       "category": "content-creation",
       "keywords": [
         "xiaohongshu",
@@ -67,7 +67,7 @@
       "description": "商业模式诊断。通过访谈帮你从做过的事里找出优势，理清能卖什么、卖给谁、怎样报价，并生成个人商业模式诊断报告。",
       "source": "./",
       "strict": false,
-      "version": "1.3.0",
+      "version": "1.3.1",
       "category": "business",
       "keywords": [
         "business-model",

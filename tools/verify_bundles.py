@@ -4,10 +4,11 @@
 三条规则：
 1. dist/skills/ 里的 zip 必须与插件清单中的 Skill 逐一对应
 2. 每个 zip 里绝不允许出现本地运行产物目录（output/、data/、缓存、tests/）
-3. 每个 zip 解压后根级必须有 SKILL.md（README 对用户的承诺）
+3. 首页必须能打开每个工具的教程，ZIP 根目录须同时包含教程和 SKILL.md
 """
 import json
 import pathlib
+import re
 import sys
 import zipfile
 
@@ -33,7 +34,13 @@ def main() -> int:
         )
         return 1
 
+    homepage = (ROOT / "README.md").read_text(encoding="utf-8")
+    tutorial_links = set(re.findall(r"\]\((?:\./)?(skills/[^/()\s]+/README\.md)(?:#[^)]*)?\)", homepage))
     for zip_path in zips:
+        guide = pathlib.Path("skills") / zip_path.stem / "README.md"
+        if guide.as_posix() not in tutorial_links or not (ROOT / guide).is_file():
+            print(f"error: homepage must link to the tutorial {guide}", file=sys.stderr)
+            return 1
         with zipfile.ZipFile(zip_path) as archive:
             names = archive.namelist()
             bad = [n for n in names if n.startswith(FORBIDDEN)]
@@ -42,6 +49,9 @@ def main() -> int:
                 return 1
             if "SKILL.md" not in names:
                 print(f"error: {zip_path} is missing root-level SKILL.md", file=sys.stderr)
+                return 1
+            if "README.md" not in names or archive.read("README.md") != (ROOT / guide).read_bytes():
+                print(f"error: {zip_path} must include the current {guide}", file=sys.stderr)
                 return 1
 
     print(f"ok: {len(zips)} expected skill bundles verified")

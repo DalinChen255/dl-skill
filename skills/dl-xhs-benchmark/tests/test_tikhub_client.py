@@ -228,3 +228,17 @@ def test_get_retries_once_on_429_then_raises_tikhub_error(mock_urlopen):
     except tc.TikHubError as exc:
         assert exc.status_code == 429
     assert mock_urlopen.call_count == 2
+
+
+@mock.patch("scripts.utils.tikhub_client.urllib.request.urlopen")
+def test_missing_note_is_reported_when_all_sources_return_empty(mock_urlopen):
+    empty_app = {"data": {"data": [{"note_list": []}]}}
+    empty_web = {"data": {"data": {"items": []}}}
+    mock_urlopen.side_effect = [_fake_response(data) for data in (empty_app, empty_app, empty_web)]
+    client = tc.TikHubClient(token="fake-token")
+    try:
+        client.fetch_note_detail("note_missing", xsec_token="sample")
+    except tc.TikHubError as exc:
+        assert "note_missing" in str(exc)
+        return
+    assert False, "missing note must not become a blank entry in the report"

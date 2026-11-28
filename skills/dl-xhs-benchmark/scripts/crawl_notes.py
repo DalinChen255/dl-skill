@@ -18,8 +18,9 @@ def build_batch_id(links: list, today: date = None) -> str:
     篇数刚好相同、但链接内容不同的两次运行互相误用对方的断点续采文件。
     """
     today = today or date.today()
-    digest = hashlib.sha256("\n".join(sorted(links)).encode("utf-8")).hexdigest()[:4]
-    return f"{today:%Y%m%d}_{len(links)}notes_{digest}"
+    unique_links = sorted(set(links))
+    digest = hashlib.sha256("\n".join(unique_links).encode("utf-8")).hexdigest()[:4]
+    return f"{today:%Y%m%d}_{len(unique_links)}notes_{digest}"
 
 
 def dedupe_links(links: list) -> list:

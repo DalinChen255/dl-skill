@@ -19,7 +19,7 @@ description: >
 
 ## 先问用户选模式
 
-有两种输入方式，先让用户选一个：
+收到笔记链接或博主主页和篇数时，直接沿对应方式继续。输入还不明确时，再让用户选一种：
 
 1. **对标博主**：给一个博主主页链接或分享短链，采集这个博主的笔记来分析
 2. **指定笔记**：用户直接把要分析的笔记链接发给你，一行一条，这些笔记允许来自不同
@@ -71,6 +71,8 @@ description: >
 - 一个 TikHub API Token（注册地址：https://user.tikhub.io/register?ref=QYnybFaK）
 - 能访问 api.tikhub.io 的网络环境
 
+首次使用时让用户在自己的终端粘贴 Token。给出按实际安装位置拼好的 `python3 /完整路径/scripts/check_env.py` 命令。环境检查只确认本地配置，实际取数可能产生 TikHub 费用。
+
 首次运行如果没检测到 Token，`check_env.py` 会自己引导你：提示去上面的地址注册、
 登录控制台勾选小红书相关的全部端点权限、生成 Token 后粘贴进去，之后自动存到
 `~/.dl-xhs-benchmark/tikhub_config.json`。读取顺序是：先看环境变量
@@ -78,9 +80,11 @@ description: >
 
 ## 跑起来的步骤
 
+以下命令的脚本路径相对本工具目录。通过插件安装时，使用实际安装位置下的脚本绝对路径，在用户选的项目里保存 `data/` 和 `output/`。
+
 **Phase 0 · 环境检查**
 ```bash
-python scripts/check_env.py
+python3 scripts/check_env.py
 ```
 确认 Python 版本和 Token 都就绪。
 
@@ -88,26 +92,26 @@ python scripts/check_env.py
 
 模式一（对标博主）——先扫描博主主页，按点赞数排序：
 ```bash
-python scripts/scan_blogger.py "<博主链接>" -o ./data
+python3 scripts/scan_blogger.py "<博主链接>" -o ./data
 ```
 脚本会报出总篇数，问用户要采集多少篇（默认按点赞取前 20）。
 
 模式二（指定笔记）——用户逐行发链接后，直接采集：
 ```bash
-python scripts/crawl_notes.py "<链接1>" "<链接2>" ... -o ./data
+python3 scripts/crawl_notes.py "<链接1>" "<链接2>" ... -o ./data
 ```
 不需要 scan 这一步，用户给几条链接就采几条。
 
 **Phase 1 · 采集笔记详情（仅模式一需要，模式二在上一步已经采完）**
 ```bash
-python scripts/crawl_blogger.py <user_id> --count <选定篇数> -o ./data
+python3 scripts/crawl_blogger.py <user_id> --count <选定篇数> -o ./data
 ```
-`user_id` 从 `scan_blogger.py` 的输出或 `<链接>_scan.json` 里的 `user_id` 字段拿。
+`user_id` 从 `scan_blogger.py` 的输出或 `<user_id>_scan.json` 里的 `user_id` 字段拿。
 采集中途断了直接重跑同一条命令，会从上次的 checkpoint 接着采，不用从头来。
 
 **Phase 2 · 跑确定性统计**
 ```bash
-python scripts/analyze.py ./data/<file_id>_notes_details.json -o ./data
+python3 scripts/analyze.py ./data/<file_id>_notes_details.json -o ./data
 ```
 `file_id` 模式一是 `user_id`，模式二是 `crawl_notes.py` 打印出的批次标识（形如
 `20260715_5notes_a1b2`）。
@@ -116,12 +120,14 @@ python scripts/analyze.py ./data/<file_id>_notes_details.json -o ./data
 
 先用脚本产出中间稿：
 ```bash
-python scripts/deep_analyze.py ./data/<file_id>_analysis.json "<产出物文件名标识>" \
+python3 scripts/deep_analyze.py ./data/<file_id>_analysis.json "<产出物文件名标识>" \
   -o ./output --scan ./data/<user_id>_scan.json
 ```
 `<产出物文件名标识>`：模式一用博主展示名，模式二用批次标识。`--scan` 只有模式一需要
 传（模式二没有 scan.json，不传这个参数）。这一步会写出 `<标识>_数据底稿.md` 和
 `<标识>_AI拆解任务.md` 两份文件。
+
+先核对底稿里确实有能读的笔记。遇到未公开、失效或没有文字的笔记，说明缺了什么；整批都没有可读材料时，请用户换链接或补正文。
 
 接下来轮到 AI：读 `AI拆解任务.md`，按里面写的五步流程（单篇标注→框架分组→提炼规律→
 代表作精读→产出可执行规则）产出结论，再把两个最终产出物写盘，写完一个就落地一个，
@@ -182,12 +188,12 @@ dl-xhs-benchmark/
 
 模式一（对标博主）：
 ```bash
-python run.py "<小红书博主链接>" --count 20
+python3 run.py "<小红书博主链接>" --count 20
 ```
 
 模式二（指定笔记）：
 ```bash
-python run.py --notes "<链接1>" "<链接2>" ...
+python3 run.py --notes "<链接1>" "<链接2>" ...
 ```
 
 这一条命令会自动跑完 Phase 0 到 Phase 3 的脚本部分（Step A）；剩下生成 HTML 报告和
