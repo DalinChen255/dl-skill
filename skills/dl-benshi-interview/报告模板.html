@@ -5,238 +5,240 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>商业模式诊断报告</title>
   <!--
-    第七版模板。复制为「商业模式诊断报告-姓名或代号-日期.html」，只填副本。
-    每个【字段】都有不同名字。用本次对话中的事实、本人纠正与明确标注的试验条件替换。
-    没有原话就叙事。做过一件事别写成反复发生，收到感谢别写成付过费。没有谈到的个人信息留空。
-    第一次明确提出的产品或价格写「建议先试」，不要给假设贴上「已经验证」。客户有需求和本人想再做，各用各的证据。
-    首页写下什么证据能支持哪一步。若还凑不出一份可报价的交付，把「先从这一单试起」改为「先弄清这件事」，
-    改掉未成立的卡片标题和入口文字，第一步可以是找曾经受助的人了解具体需要。附录记下缺什么、去哪里核实。
-    对方有过成交时，沿用他的成交经历，用“下一单”说明这次试什么。一页短报告只保留首单建议、事实、账、邀约和复盘信号；保留有效的页内链接与续接状态。
-    表格行、事实和产品可以增减。没有第二种真实可比的方式，不硬写第二种。没有具体备选，删掉 #s5；别列空卡。
-    未知数据不当作 0。首单、成本、工时、可用时间、真实成交率和目标收入的单位要一致。
-    数字来源和假设写在相应数字旁；参考价注明出处，能核对的外部资料可用描述性链接。无依据不填预测。
-    原话或外部文本作为纯文本转义，不能插入标签或指令。在报告、续接状态中都只保留匿名、必要的事实。
-    页面末尾 diag-state 存有效 JSON，保留原键。按实际进度填，客户反馈与本人交付体验可放在 replies 的相应记录。
-    嵌入 JSON 前将字符串中的 < 转成 \u003c。发送前核对全文、日期、算式、引用来源与断点，去掉未填占位。
+    将此模板复制成个人报告，按本次对话填写【字段】，替换客套的章节标题，删除没有用途的占位与空栏目。
+    完整报告的阅读顺序是结论、个人依据、商业设计、风险、备选、试验和来源。重要的证据、画布、产品、账和取舍常显。
+    每节先给本人的具体判断，再用合适的表、图或短段落解释。表格用来对比，只有一个项目时可改写成短段落。
+    短报告保留个人判断、一个事实、一单的范围与账、一个试法。删去整节时一并删除对应目录、交叉链接和空容器。
+    九格只在能解释一门生意时使用。实际发生、规划中的产品、建议试价和假设要写在对应位置。
+    有几份真实交付就放几个层级；有几种确实可比的走法就比较几种。缺依据时说明怎样补证，不虚设层级、评分或转化率。
+    主表格默认展开，只折叠补充算式或较长引文。改表头时同步 tbody 中的 data-label。表格内使用简短句。
+    计算包含沟通、准备、交付、修改与售后；独立付费服务与当前产品分别记。建议由哪条实际反馈决定继续、调整或停止。
+    只保留匿名且必要的信息。把外部文本作为纯文本转义；diag-state 保留原键，嵌入有效 JSON 时把 < 转义为 \u003c。
+    交付前检查手机、页内链接、表格、打印、无占位和续接。输出新文件，不覆盖此前报告。
   -->
   <style>
     :root {
       color-scheme: light dark;
-      --paper: #fffefa;
-      --back: #f1f0eb;
-      --text: #202934;
-      --muted: #55616a;
-      --rule: #cdd1c9;
-      --soft: #f2f3ed;
-      --ink: #173d47;
-      --ink-tint: #e5efeb;
-      --accent: #97452b;
+      --page:#eeeee9; --paper:#fffcf6; --text:#202e2b; --muted:#536562;
+      --ink:#17493f; --cover:#153e38; --cover-text:#fffdf5; --cover-muted:#d2e2d9;
+      --line:#c7d0c5; --wash:#eef4ec; --panel:#f3f2e9; --accent:#87502c; --warm:#f5ece1;
     }
-    @media (prefers-color-scheme: dark) {
+    @media (prefers-color-scheme:dark) {
       :root {
-        --paper: #1b2426;
-        --back: #12191a;
-        --text: #f0f1eb;
-        --muted: #bdc9c7;
-        --rule: #475857;
-        --soft: #263031;
-        --ink: #b4dfd5;
-        --ink-tint: #253a38;
-        --accent: #f4b398;
+        --page:#111d1a; --paper:#1b2925; --text:#eff2e9; --muted:#becdc5;
+        --ink:#aad8c7; --cover:#122e29; --cover-text:#f7f6eb; --cover-muted:#cbddd3;
+        --line:#435a50; --wash:#203c32; --panel:#29362e; --accent:#f1bd96; --warm:#3c3026;
       }
     }
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
-    body {
-      margin: 0;
-      color: var(--text);
-      background: var(--back);
-      font: 16px/1.7 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-      overflow-wrap: anywhere;
+    * { box-sizing:border-box; }
+    html { -webkit-text-size-adjust:100%; scroll-padding-top:1rem; }
+    body { margin:0; color:var(--text); background:var(--page); font:1rem/1.73 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; overflow-wrap:anywhere; }
+    h1,h2,h3,h4,p,dl,dd,ol,ul,figure { margin:0; }
+    h1,h2,h3,h4 { line-height:1.38; text-wrap:pretty; }
+    h1,h2,.verdict { font-family:"Songti SC","STSong","Noto Serif CJK SC",serif; }
+    h1 { font-size:clamp(1.85rem,4.3vw,2.8rem); font-weight:700; }
+    h2 { color:var(--ink); font-size:clamp(1.48rem,3.1vw,1.95rem); }
+    h3 { font-size:1.14rem; margin:1.5rem 0 .55rem; }
+    h4 { font-size:1rem; }
+    p + p { margin-top:.6rem; }
+    a { color:var(--ink); text-underline-offset:.2em; }
+    a:focus-visible,summary:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+    .sheet { max-width:61rem; margin:2rem auto 4rem; background:var(--paper); border:1px solid var(--line); box-shadow:0 .4rem 2.4rem #19291f0a; }
+    header,main > section,.toc,.end { padding-inline:clamp(1.2rem,4.6vw,3.4rem); }
+    header { display:flex; align-items:end; justify-content:space-between; gap:1rem; padding-block:1.65rem; background:var(--cover); color:var(--cover-text); }
+    .byline { color:var(--cover-muted); text-align:right; line-height:1.5; font-size:.92rem; }
+    .byline span { display:block; }
+    main > section { padding-block:clamp(1.5rem,3.8vw,2.65rem); border-bottom:1px solid var(--line); }
+    main > section > h2:first-child { margin-bottom:1rem; }
+    .verdict { margin:.45rem 0 .75rem; color:var(--ink); font-weight:650; font-size:clamp(1.22rem,2.6vw,1.55rem); line-height:1.62; }
+    .section-intro,.scene,.why { margin:.55rem 0 1rem; }
+    dt,.matrix tbody th { color:var(--ink); font-weight:650; }
+    .signals,.pair,.trio { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem; margin:1rem 0; }
+    .trio { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .signals > div,.pair > div,.trio > div,.panel { padding:.8rem 1rem; background:var(--panel); }
+    .signals > div { background:var(--wash); border-top:.2rem solid var(--ink); }
+    .signals > div + div { background:var(--warm); border-color:var(--accent); }
+    .signals > div + div dt { color:var(--accent); }
+    .signals dd,.pair dd,.trio dd { margin-top:.22rem; }
+    .next-move,.brief { margin-top:1rem; border-left:3px solid var(--ink); padding:.2rem 0 .2rem .85rem; }
+    .next-move strong,.brief strong { margin-right:.55rem; }
+    .toc { display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .95rem; padding-block:.75rem; border-bottom:1px solid var(--line); background:var(--wash); }
+    .toc a { padding:.15rem 0; font-size:.91rem; font-weight:570; }
+    .matrix { width:100%; table-layout:fixed; border-collapse:collapse; font-size:.95rem; margin:.7rem 0 1.2rem; }
+    .matrix th,.matrix td { text-align:left; vertical-align:top; padding:.65rem .8rem; border-bottom:1px solid var(--line); }
+    .matrix thead th { background:var(--wash); color:var(--ink); font-size:.88rem; }
+    .matrix th:first-child { width:23%; }
+    .matrix td,.matrix th { hyphens:auto; }
+    figure { margin:.7rem 0 1rem; }
+    figcaption,.caption { margin-top:.5rem; color:var(--muted); font-size:.9rem; }
+    .canvas { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; padding:1px; background:var(--line); }
+    .canvas > div { padding:.65rem .9rem; background:var(--paper); }
+    .canvas > div:nth-child(3n+1) { background:var(--wash); }
+    .canvas dd { font-size:.95rem; margin-top:.16rem; }
+    .ladder,.timeline { list-style:none; padding:0; margin:.65rem 0 1rem; }
+    .ladder { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); gap:.65rem; }
+    .ladder > li { padding:.85rem 1rem; background:var(--panel); border-top:.2rem solid var(--line); }
+    .ladder > li.featured { background:var(--wash); border-color:var(--ink); }
+    .ladder h4,.ladder h3,.timeline h3,.timeline h4 { margin:0 0 .4rem; font:650 1.04rem/1.45 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; color:var(--ink); }
+    .timeline { padding-left:.6rem; }
+    .timeline > li { position:relative; border-left:2px solid var(--line); padding:0 0 1rem 1.25rem; }
+    .timeline > li::before { content:""; position:absolute; top:.28rem; left:-.34rem; width:.55rem; height:.55rem; border-radius:50%; background:var(--ink); }
+    .timeline > li:last-child { border-color:transparent; padding-bottom:0; }
+    .script { padding:.9rem 1.1rem; border-left:3px solid var(--ink); background:var(--wash); white-space:pre-line; }
+    .rows > div { display:grid; grid-template-columns:minmax(6rem,24%) minmax(0,1fr); gap:.75rem; padding:.5rem 0; border-bottom:1px solid var(--line); }
+    .rows,.panel { margin-top:.75rem; }
+    .panel h3 { margin-top:0; }
+    details { margin:.75rem 0; border-block:1px solid var(--line); }
+    summary { color:var(--ink); cursor:pointer; padding:.65rem .15rem; font-weight:650; }
+    .fold-content { padding:0 .15rem .9rem; }
+    .notes { padding-left:1.25rem; }
+    .notes li + li { margin-top:.4rem; }
+    .end { padding-block:.8rem; text-align:right; font-size:.88rem; }
+    @media screen and (max-width:45rem) {
+      .sheet { margin:0 auto; border-inline:0; }
+      header { flex-direction:column; align-items:start; gap:.4rem; padding-block:1.2rem; }
+      .byline { display:flex; gap:.8rem; text-align:left; flex-wrap:wrap; }
+      .trio,.pair,.signals { grid-template-columns:1fr; gap:.48rem; }
+      .signals > div { padding:.65rem .85rem; border-top:0; border-left:3px solid var(--ink); }
+      .signals > div + div { border-left-color:var(--accent); }
+      .canvas { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .canvas > div:nth-child(n) { background:var(--paper); }
+      .canvas dt { border-bottom:1px solid var(--line); padding-bottom:.15rem; }
+      .matrix { display:block; margin-top:.6rem; }
+      .matrix thead { position:absolute; clip-path:inset(50%); width:1px; height:1px; overflow:hidden; }
+      .matrix tbody,.matrix tbody tr { display:block; }
+      .matrix tbody tr { border:1px solid var(--line); border-radius:.2rem; }
+      .matrix tbody tr + tr { margin-top:.55rem; }
+      .matrix tbody th:first-child { display:block; width:100%; background:var(--wash); }
+      .matrix tbody td { display:grid; grid-template-columns:minmax(4.4em,23%) minmax(0,1fr); gap:.75rem; border:0; }
+      .matrix tbody td::before { content:attr(data-label); font-size:.83rem; font-weight:650; color:var(--muted); }
+      .matrix tbody td + td { border-top:1px dotted var(--line); }
+      .ladder { grid-template-columns:1fr; }
+      .toc { gap:.25rem .85rem; }
     }
-    h1, h2, h3, p, dl, dd { margin: 0; }
-    h1, h2, h3 { line-height: 1.35; text-wrap: pretty; }
-    h1 { font-size: clamp(1.75rem, 5vw, 2.7rem); font-weight: 720; }
-    h2 { font-size: clamp(1.38rem, 2.9vw, 1.8rem); }
-    h3 { font-size: 1.08rem; margin: 1.5rem 0 .55rem; }
-    a { color: var(--ink); text-underline-offset: .2em; }
-    a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
-    .sheet { max-width: 54rem; margin: 1.5rem auto 3.5rem; background: var(--paper); border: 1px solid var(--rule); }
-    header, main > section { padding: clamp(1.2rem, 4vw, 2.7rem); }
-    header { display: flex; justify-content: space-between; align-items: end; gap: 1rem; padding-block: 1.6rem; border-top: .35rem solid var(--ink); border-bottom: 1px solid var(--rule); }
-    .byline { color: var(--muted); font-size: .92rem; }
-    .byline span { display: block; }
-    main > section + section { border-top: 1px solid var(--rule); }
-    .scene { margin: .65rem 0 1.2rem; }
-    .verdict { color: var(--ink); font-size: clamp(1.15rem, 2.5vw, 1.45rem); font-weight: 650; line-height: 1.6; }
-    .why { margin: .85rem 0 1.15rem; }
-    .pair, .trio, .canvas { display: grid; gap: .7rem; }
-    .pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .trio, .canvas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .trio { margin: 1.15rem 0 .9rem; }
-    .pair > div, .trio > div, .panel { padding: .85rem 1rem; background: var(--soft); }
-    .pair > div, .trio > div { border-radius: .2rem; }
-    dt { color: var(--ink); font-weight: 650; }
-    dd { margin-top: .16rem; }
-    .brief { padding: 1rem 1.2rem; background: var(--ink-tint); border-left: .22rem solid var(--ink); }
-    .brief strong { display: block; }
-    .brief a { display: inline-block; margin-top: .4rem; }
-    .notes, .rows { padding: 0; margin: .55rem 0 0; }
-    .notes { padding-left: 1.3rem; }
-    .notes li + li { margin-top: .25rem; }
-    .rows > div { display: grid; grid-template-columns: minmax(6.6rem, 26%) minmax(0, 1fr); gap: 1rem; padding: .5rem 0; border-bottom: 1px solid var(--rule); }
-    .rows dd { margin: 0; }
-    .section-intro { margin: .65rem 0 .9rem; }
-    .service { border-left: .2rem solid var(--rule); padding: .1rem 0 .1rem .95rem; margin: 1rem 0; }
-    .service h3 { margin: 0 0 .35rem; }
-    .service.featured { border-color: var(--accent); }
-    details { border-block-end: 1px solid var(--rule); margin-top: .35rem; }
-    summary { padding: .65rem .15rem; color: var(--ink); cursor: pointer; font-weight: 650; }
-    .fold-content { padding: .15rem 0 1rem; }
-    .canvas { gap: 1px; background: var(--rule); padding: 1px; }
-    .canvas > div { background: var(--paper); padding: .65rem .8rem; }
-    .canvas dt { font-size: .9rem; }
-    .canvas dd { font-size: .94rem; }
-    .script { white-space: pre-line; margin: .6rem 0 0; padding: 1rem 1.15rem; background: var(--ink-tint); border-left: .22rem solid var(--ink); }
-    .milestones { padding-left: 1.35rem; }
-    .milestones li { padding-left: .2rem; margin-block: .45rem; }
-    .decision { border-inline-start: .2rem solid var(--accent); padding-inline-start: .85rem; margin-top: 1.05rem; }
-    .panel { margin-top: .75rem; }
-    .panel h3 { margin: 0 0 .4rem; }
-    @media (max-width: 44rem) {
-      .sheet { margin: 0 auto; border-inline: 0; }
-      header { align-items: start; flex-wrap: wrap; gap: .3rem 1rem; }
-      .byline { display: flex; gap: .25rem .75rem; flex-wrap: wrap; }
-      .trio, .pair { grid-template-columns: 1fr; gap: .45rem; }
-      .trio > div { display: grid; grid-template-columns: 4.6em minmax(0, 1fr); gap: .5rem; padding: .54rem .7rem; }
-      .trio dd { margin: 0; }
-      .canvas { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .rows > div { grid-template-columns: minmax(5.1rem, 25%) minmax(0, 1fr); gap: .6rem; }
-    }
-    @media (max-width: 24rem) { .canvas { grid-template-columns: 1fr; } }
-    @page { size: A4; margin: 17mm; }
+    @media screen and (max-width:23rem) { .canvas { grid-template-columns:1fr; } }
+    @page { size:A4; margin:15mm; }
     @media print {
-      :root { color-scheme: light; --paper:#fff; --back:#fff; --text:#111; --muted:#383c3b; --rule:#a9b0ac; --soft:#f4f4f0; --ink:#162b2e; --ink-tint:#edf3ef; --accent:#6a3523; }
-      body { font-size: 10.5pt; }
-      .sheet { max-width: none; margin: 0; border: 0; }
-      header, main > section { padding: 10pt 0; }
-      header { border-top-width: 2pt; }
-      h1 { font-size: 20pt; } h2 { font-size: 15pt; } h3 { font-size: 11.5pt; }
-      h2, h3, summary { break-after: avoid; }
-      p { orphans: 2; widows: 2; }
-      .brief, .service, .panel, .rows > div, .canvas > div, .decision { break-inside: avoid; }
-      .brief a { display: none; }
-      details::details-content { display: block; content-visibility: visible; }
-      summary { list-style: none; }
-      summary::-webkit-details-marker { display: none; }
-      .fold-content { padding-bottom: .5rem; }
+      :root { color-scheme:light; --paper:#fff; --page:#fff; --text:#14221e; --muted:#3c5048; --ink:#173e34; --line:#acb8ae; --wash:#eff4ed; --panel:#f5f5ef; --warm:#f6f0e9; --accent:#633d27; }
+      body { font-size:10.5pt; }
+      .sheet { max-width:none; margin:0; border:0; box-shadow:none; }
+      header { background:none; color:var(--ink); border-block:2px solid var(--ink); padding:8pt 0; }
+      .byline { color:var(--muted); }
+      .toc,.end,.next-move a,.brief a { display:none; }
+      main > section { padding:12pt 0; }
+      h1 { font-size:20pt; } h2 { font-size:16pt; } h3 { font-size:12pt; }
+      h2,h3,h4,summary { break-after:avoid; }
+      h2 + p,h3 + p,h4 + p { break-before:avoid; }
+      p { widows:2; orphans:2; }
+      .matrix { font-size:9.5pt; }
+      .matrix thead { display:table-header-group; }
+      .matrix tr,.canvas > div,.ladder li,.timeline li,.panel,.signals > div,.script { break-inside:avoid; }
+      .matrix th,.matrix td,.ladder li,.canvas > div { padding:4pt 6pt; }
+      .ladder { grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr)); }
+      details::details-content { display:block; content-visibility:visible; }
+      summary { list-style:none; }
+      summary::-webkit-details-marker { display:none; }
     }
   </style>
 </head>
 <body>
 <div class="sheet">
-  <header>
+  <header class="cover">
     <h1>商业模式诊断报告</h1>
     <p class="byline"><span>【称呼】</span><span>【报告日期】</span></p>
   </header>
   <main>
-    <section id="s1" aria-labelledby="first-order">
-      <h2 id="first-order">先从这一单试起</h2>
-      <p class="scene">【你帮过谁、当时具体做了哪一步、对方后来怎样】</p>
-      <p class="verdict">【结合这件事，用一两句说最值得先试的收费服务】</p>
-      <p class="why">【哪些事实支持这个判断，最有希望的地方在哪，哪一点风险还得用第一单看】</p>
-      <dl class="trio">
-        <div><dt>先找谁</dt><dd>【处在什么情境、你能直接联系到的人】</dd></div>
-        <div><dt>交付什么</dt><dd>【买家能拿到的东西与这次做到哪一步】</dd></div>
-        <div><dt>怎么报价</dt><dd>【这次准备报的价，写明已有成交价或首轮试价】</dd></div>
+    <section id="s1" aria-labelledby="diagnosis">
+      <h2 id="diagnosis">诊断结论</h2>
+      <p class="verdict">【结合此人实际处境，说清最值得尝试的商业方向】</p>
+      <p class="scene">【支撑判断的一件事，以及本人做对的那个具体动作】</p>
+      <dl class="signals">
+        <div><dt>眼下的机会</dt><dd>【有哪条买方线索，决定优先找谁解决什么问题】</dd></div>
+        <div><dt>最需验证</dt><dd>【可能推翻建议的关键未知，以及到哪里看证据】</dd></div>
       </dl>
-      <div class="brief"><strong>今天先做这件事</strong>【一个十分钟能做的具体动作】<br><a href="#s6">看可以发给对方的话</a></div>
+      <p class="next-move"><strong>先做这一步</strong>【一个当天可做、能带回新信息的动作】 <a href="#s6">查看试法</a></p>
     </section>
-
-    <section id="s2" aria-labelledby="experience">
-      <h2 id="experience">从你做过的事里，看到了什么</h2>
-      <p class="section-intro">【别人来找你的原因，你当时哪个做法帮了忙】</p>
-      <dl class="pair">
-        <div><dt>对方需要的部分</dt><dd>【来找你、实际使用、回来反馈或单独付款的事实，写清到哪一步】</dd></div>
-        <div><dt>你愿意再做的部分</dt><dd>【你记得的那个时刻及你的原话，或交付后要确认的感受】</dd></div>
+    <nav class="toc" aria-label="报告目录">
+      <a href="#s1">结论</a><a href="#s2">优势依据</a><a href="#s3">商业模式</a><a href="#s4">风险</a><a href="#s5">方案取舍</a><a href="#s6">行动</a><a href="#s7">依据</a>
+    </nav>
+    <section id="s2" aria-labelledby="strengths">
+      <h2 id="strengths">你手上已经有什么</h2>
+      <p class="section-intro">【你的哪一步能帮到别人；结论能推广到什么程度】</p>
+      <h3>哪些经历支持这个判断</h3>
+      <table class="matrix">
+        <thead><tr><th scope="col">经历</th><th scope="col">实际发生</th><th scope="col">能说明什么</th><th scope="col">还不知道</th></tr></thead>
+        <tbody><tr><th scope="row">【一件具体求助或交易】</th><td data-label="实际发生">【动作、使用反馈或实际收款】</td><td data-label="能说明什么">【这一条支持的有限判断】</td><td data-label="还不知道">【这一条无法证明的内容】</td></tr></tbody>
+      </table>
+      <h3>你的做事方式，怎样改变这门生意</h3>
+      <dl class="rows">
+        <div><dt>你想亲自做的部分</dt><dd>【本人认可的那一幕，如何改变产品或服务形式】</dd></div>
+        <div><dt>交付做到哪里</dt><dd>【把最费力的环节、能力或可用资源转成范围、频率或结束点】</dd></div>
       </dl>
-      <h3>这会怎样改变交付</h3>
-      <p>【哪一步费力，建议保留什么、限量或调整什么；分清本人的话和建议】</p>
-      <h3>现在用得上的条件</h3>
-      <p>【有依据的时间、能联系到的人、已获准使用的作品或渠道；写清限制】</p>
     </section>
-
     <section id="s3" aria-labelledby="business">
-      <h2 id="business">这门生意怎么做</h2>
-      <p class="section-intro">【这个人为什么可能愿意花钱，他目前用什么办法，哪一步还麻烦】</p>
-      <div class="service featured"><h3>这次怎样交付、怎样收钱</h3><p>【收费服务的步骤、形式、预计耗时、明确结束点及哪些额外要求另外谈】</p></div>
-      <div class="service"><h3>先让对方看看什么</h3><p>【免费的展示给谁、提供什么、用时多久，有了什么反馈才值得邀请试单】</p></div>
-      <div class="service"><h3>做完这一单以后</h3><p>【何时回访，出现什么后续需求才值得升级，以及可试的交付、时间与报价依据】</p></div>
-      <h3>这一单值不值得接</h3>
-      <dl class="rows">
-        <div><dt>价格怎么来</dt><dd>【同类实际成交、客户原有支出或明确假设，给出定价算式或待问的问题】</dd></div>
-        <div><dt>一单花多少</dt><dd>【材料等直接开销，以及沟通、准备、正式交付、修改和售后各花的时间】</dd></div>
-        <div><dt>一个月接几单</dt><dd>【按可用工时算上限，再看目标要几单；如缺输入，说明第一单要记什么】</dd></div>
+      <h2 id="business">商业模式设计</h2>
+      <p class="section-intro">【谁处在什么情境、现有做法哪里不顺、为何可能考虑你的帮助】</p>
+      <h3>一张图看懂这门生意</h3>
+      <dl class="canvas">
+        <div><dt>谁需要</dt><dd>【客户此刻所处的具体情境】</dd></div>
+        <div><dt>他想办成什么</dt><dd>【他真实在意的结果】</dd></div>
+        <div><dt>你交付什么</dt><dd>【结果、形式及交付终点】</dd></div>
+        <div><dt>在哪里遇见</dt><dd>【已能接触买家的地方，或待试的渠道】</dd></div>
+        <div><dt>怎样合作</dt><dd>【从初次接触到是否继续的合作方式】</dd></div>
+        <div><dt>怎样收钱</dt><dd>【已成交、计划价或试报价及收款节点】</dd></div>
+        <div><dt>已有资源</dt><dd>【能用来完成这次交付的资源和经验】</dd></div>
+        <div><dt>日常要做什么</dt><dd>【找人、交付和跟进的关键动作】</dd></div>
+        <div><dt>要付出什么</dt><dd>【主要成本、工时与承受上限】</dd></div>
       </dl>
-      <details><summary>查看收入和时间的详细算法</summary><div class="fold-content">
-        <p>【月收入目标、单价、成本、订单数与总工时的关系，营业收入与扣成本后的金额分清】</p>
-        <ul class="notes"><li>【一组可行组合及依据，数据够可再列一到两组；写清推荐哪一组及原因】</li></ul>
-        <p>【已知成交情况支持的联系人数，或未知时如何记录实际回应】</p>
-      </div></details>
-      <details><summary>查看这门生意的全貌</summary><div class="fold-content">
-        <dl class="canvas">
-          <div><dt>客户</dt><dd>【客户的具体处境】</dd></div>
-          <div><dt>客户要办什么事</dt><dd>【他想达成的结果】</dd></div>
-          <div><dt>怎样帮他</dt><dd>【你帮他的方式】</dd></div>
-          <div><dt>怎样找到他</dt><dd>【实际可用的联系途径】</dd></div>
-          <div><dt>怎样合作</dt><dd>【一次结束还是后续有约】</dd></div>
-          <div><dt>怎样收钱</dt><dd>【价格和收款节点】</dd></div>
-          <div><dt>手里有什么</dt><dd>【可用于这次交付的经验或资源】</dd></div>
-          <div><dt>平时要做什么</dt><dd>【持续找人、交付、跟进的日常工作】</dd></div>
-          <div><dt>要付出什么</dt><dd>【做这门生意的主要成本和承受上限】</dd></div>
-        </dl>
-      </div></details>
+      <h3>产品怎么衔接</h3>
+      <ol class="ladder">
+        <li><h4>【已有的体验或免费入口】</h4><p>【适用的人能看到什么、获得什么，以及使用这个入口的证据】</p></li>
+        <li class="featured"><h4>【本次最值得试的收费交付】</h4><p>【适合谁、做多久、交付到哪一步结束、报价凭什么】</p></li>
+        <li><h4>【有依据才保留的后续服务】</h4><p>【何种真实需求出现后再做，价格与范围依据是什么】</p></li>
+      </ol>
+      <h3>算一笔账</h3>
+      <table class="matrix">
+        <thead><tr><th scope="col">交付或情景</th><th scope="col">收款与支出</th><th scope="col">占用时间</th><th scope="col">对决定的影响</th></tr></thead>
+        <tbody><tr><th scope="row">【已有的一单或明确标注的试算】</th><td data-label="收款与支出">【实收或试价，减去有依据的直接成本】</td><td data-label="占用时间">【已知工时与尚未计算的环节】</td><td data-label="对决定的影响">【带单位的结果、算式及适用范围】</td></tr></tbody>
+      </table>
+      <details><summary>查看算式和产能前提</summary><div class="fold-content"><p>【列出可用时间、每单工时、成本、目标和可承接单数之间能算清的一步；若缺数，指出下次应记录什么】</p></div></details>
     </section>
-
-    <section id="s4" aria-labelledby="risks">
-      <h2 id="risks">最容易卡在哪里</h2>
-      <div class="panel"><h3>【和这个人直接相关的风险】</h3><p>【依据他的经历说明哪个信号出现时，应做哪项调整】</p></div>
+    <section id="s4" aria-labelledby="risk">
+      <h2 id="risk">风险和对策</h2>
+      <table class="matrix">
+        <thead><tr><th scope="col">可能卡在哪里</th><th scope="col">最早会看到什么</th><th scope="col">届时怎么改</th></tr></thead>
+        <tbody><tr><th scope="row">【会让当前设计失效的一项风险】</th><td data-label="最早会看到什么">【会在实际使用、报价或交付中观察到的信号】</td><td data-label="届时怎么改">【按信号调整一个具体决定】</td></tr></tbody>
+      </table>
     </section>
-
-    <section id="s5" aria-labelledby="alternatives">
-      <h2 id="alternatives">还有哪条路可以走</h2>
-      <div class="panel"><h3>【考虑过的另一种人群、产品或合作方式】</h3><p>【为什么暂时排在后面，出现什么具体变化就值得重看】</p></div>
+    <section id="s5" aria-labelledby="choices">
+      <h2 id="choices">方案取舍</h2>
+      <table class="matrix">
+        <thead><tr><th scope="col">可走的路</th><th scope="col">现在怎么选</th><th scope="col">何时再看</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">【目前主方案】</th><td data-label="现在怎么选">【优先它的证据、适用条件和代价】</td><td data-label="何时再看">【什么事实会动摇这个选择】</td></tr>
+          <tr><th scope="row">【真实考虑过的另一种方案】</th><td data-label="现在怎么选">【暂缓它的具体理由】</td><td data-label="何时再看">【值得重新考虑的条件】</td></tr>
+        </tbody>
+      </table>
     </section>
-
-    <section id="s6" aria-labelledby="trial">
-      <h2 id="trial">这一单怎么试，做完怎么看</h2>
-      <h3>可以发给对方的话</h3>
-      <p class="script">【照本人的语气写给具体对象，报价时说清做什么、时长、价格和结束点；探索需求时先问经历】</p>
-      <h3>接下来七天</h3>
-      <ol class="milestones"><li>【邀约后记录对方的原话、是否约时间或付了钱】</li><li>【有人接单后，实际交付一次，把准备和收尾都算进去；未接单时改测哪个问题】</li></ol>
-      <dl class="pair">
-        <div><dt>客户这边</dt><dd>【本单要观察的具体付费行为与使用结果，哪些回应只算兴趣】</dd></div>
-        <div><dt>你这边</dt><dd>【做完这单再回答的一个具体问题，围绕想再做的环节、花费或边界】</dd></div>
-      </dl>
-      <div class="decision"><dl class="rows">
-        <div><dt>接着试</dt><dd>【什么实际反应足以再接一单】</dd></div>
-        <div><dt>改一处再试</dt><dd>【谁的哪条反馈会促使你改价格、范围、频率或交付方式中的一项】</dd></div>
-        <div><dt>暂停或换方向</dt><dd>【哪类重复的事实或不可承受的成本足以推翻当前方案】</dd></div>
-      </dl></div>
-      <dl class="rows">
-        <div><dt>30 天回看</dt><dd>【这个月该核对的现实结果，决定下一单怎么接】</dd></div>
-        <div><dt>90 天回看</dt><dd>【到时看哪项变化，再决定是否扩大、调整或停止】</dd></div>
-      </dl>
+    <section id="s6" aria-labelledby="act">
+      <h2 id="act">接下来怎样试</h2>
+      <ol class="timeline">
+        <li><h3>接下来七天</h3><p>【首个实验、接触对象和用什么观察变化】</p></li>
+        <li><h3>完成一单后</h3><p>【客户是否付款和使用，本人是否愿意再做；什么结果支持继续、调整或暂停】</p></li>
+        <li><h3>一个月后</h3><p>【要查看哪项积累证据，何时值得延长至 90 天或扩大投入】</p></li>
+      </ol>
+      <h3>可以怎样开口</h3>
+      <p class="script">【贴合真实关系的原话式邀约，交付可定时说明范围与试价，不足时先听需求】</p>
     </section>
-
-    <section id="s7" aria-labelledby="basis">
-      <h2 id="basis">依据和待验证</h2>
-      <h3>报告依据了哪些事实</h3>
-      <ul class="notes"><li>【原话、亲历事实或可查来源，标明出自哪件事，转述照实注明】</li></ul>
-      <h3>下次带回什么信息</h3>
-      <ul class="notes"><li>【尚未确认的判断、找谁试、什么结果会改变它】</li></ul>
+    <section id="s7" aria-labelledby="sources">
+      <h2 id="sources">依据与待验证</h2>
+      <h3>这次用到的材料</h3>
+      <ul class="notes"><li>【匿名来源或日期，注明是原话、实际动作、金额记录还是本人判断】</li></ul>
+      <h3>什么新证据值得带回来</h3>
+      <ul class="notes"><li>【一个会改变推荐的问题，找谁、记录哪些原话或结果】</li></ul>
     </section>
   </main>
+  <footer class="end"><a href="#s1">返回诊断结论</a></footer>
 </div>
 <script type="application/json" id="diag-state">
 {
